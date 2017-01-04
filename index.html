@@ -11,7 +11,14 @@
   <!--icon next to title -->
   <link rel="icon" href="img/BB8.jpg">
 
-  <style> course {font-size:0.8em; display:block}</style>
+  <style>
+  course {font-size:0.8em; display:block}
+  @media only screen and (max-width:480px)
+  {
+    small {display: none;}
+    iframe {max-width: 100%;}
+  }
+  </style>
 
   <title>Seikyung Jung</title>
 
@@ -35,7 +42,7 @@
       <course><i>COMP151</i> CS I (Java I, Python)</course>
         <course><i>COMP152</i> CS II (Java II, C++)</course>
         <course><i>COMP320</i> Linux Admin</course>
-        <course><i>COMP335</i> Web app development</course>
+        <course><a href="comp335.html"><i>COMP335</i> Web app development</a></course>
         <course><i>COMP340</i> Programming Languages (Haskell)</course>
         <course><i>COMP345/525</i> Compilers</course>
         <course><i>COMP419/585</i> Web Information Retrieval</course>
