@@ -763,7 +763,6 @@ module.exports = app;</pre>
 var router = express.Router();
 
 var env = require('dotenv').config();
-
 const Client = require('pg').Client;
 const client = new Client({
   connectionString: process.env.DATABASE_URL
@@ -780,7 +779,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/logout', function(req, res){
-    req.logout(); //passport provide
+    req.logout(); //passport provide it
     res.redirect('/users'); // Successful. redirect to localhost:3000/users
 });
 
@@ -788,14 +787,7 @@ function loggedIn(req, res, next) {
   if (req.user) {
     next(); // req.user exists, go to the next function (right after loggedIn)
   } else {
-    res.redirect('/users/profile'); // user doesn't exists redirect to localhost:3000/users/login
-  }
-}
-function notloggedIn(req, res, next) {
-  if (!req.user) {
-    next(); // req.user exists, go to the next function (right after loggedIn)
-  } else {
-    res.redirect('/users/profile'); // user doesn't exists redirect to localhost:3000/users/login
+    res.redirect('/users/login'); // user doesn't exists redirect to localhost:3000/users/login
   }
 }
 
@@ -803,7 +795,16 @@ router.get('/profile',loggedIn, function(req, res){
       // req.user: passport middleware adds "user" object to HTTP req object
       res.render('profile', { person: req.user });
 });
-router.get('/login', notloggedIn, function(req, res){
+
+function notLoggedIn(req, res, next) {
+  if (!req.user) {
+    next();
+  } else {
+    res.redirect('/users/profile');
+  }
+}
+
+router.get('/login', notLoggedIn, function(req, res){
     //success is set true in sign up page
     //req.flash('error') is mapped to 'message' from passport middleware
     res.render('login', {success:req.query.success, errorMessage: req.flash('error')});
@@ -816,8 +817,6 @@ router.post('/login',
   function(req, res,next) {
     res.redirect('/users/profile'); // Successful. redirect to localhost:3000/users/profile
 });
-
-
 
 router.get('/signup',function(req, res) {
     // If logged in, go to profile page
@@ -868,7 +867,6 @@ router.post('/signup', function(req, res, next) {
     }
   });
 });
-
 
 module.exports = router;</pre>
 </div>
@@ -998,7 +996,7 @@ module.exports = router;</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-11-14 09:30:25 EST
+Last updated 2017-11-14 10:05:58 EST
 </div>
 </div>
 </body>
