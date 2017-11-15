@@ -568,8 +568,8 @@ echo "DATABASE_URL='postgres://localhost'" &gt; .env</pre>
 </div>
 </li>
 <li>
-<p>Copy&amp;Paste these files from P5-Authentication to P6-Heroku:
-<code>app.js</code>, <code>users.js</code>, <code>user.hbs</code>, <code>layout.hbs</code>, <code>login.hbs</code>, <code>signup.hbs</code>, <code>profile.hbs</code></p>
+<p>Copy &amp; Paste these files from P5-Authentication to P6-Heroku:
+<code>app.js</code>, <code>routes/users.js</code>, <code>views/user.hbs</code>, <code>views/layout.hbs</code>, <code>views/login.hbs</code>, <code>views/signup.hbs</code>, <code>views/profile.hbs</code></p>
 </li>
 <li>
 <p>Run locally</p>
@@ -630,9 +630,11 @@ echo "DATABASE_URL='postgres://localhost'" &gt; .env</pre>
 </div>
 </li>
 <li>
-<p>Node installs dependencies in <code>node_modules</code>.
-Since we don&#8217;t want dependencies in git, let&#8217;s ignore them.
-Likewise, Heroku will have it&#8217;s own .env file. So we should NOT commit .env file to Heroku server.</p>
+<p>Node installs dependencies in <code>node_modules</code>.</p>
+<div class="paragraph">
+<p>Likewise, Heroku will have it&#8217;s own .env file. So we should NOT commit .env file to Heroku server.
+Since we don&#8217;t want dependencies in git, let&#8217;s ignore them.</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre>echo "node_modules" &gt;&gt; .gitignore
@@ -683,8 +685,7 @@ git commit -m "Initial commit"</pre>
 Do you see your homepage from Heroku site?</p>
 </li>
 <li>
-<p>Provision a database on Heroku
-(creating database on heroku; sql syntax - create database;)</p>
+<p>Provision (i.e., create) a database on Heroku</p>
 <div class="listingblock">
 <div class="content">
 <pre>heroku addons:create heroku-postgresql:hobby-dev</pre>
@@ -692,7 +693,7 @@ Do you see your homepage from Heroku site?</p>
 </div>
 </li>
 <li>
-<p>You will need to repeat steps to create tables and insert data to heroku remote database server</p>
+<p>You will need to recreate tables and insert data to heroku remote database server</p>
 <div class="listingblock">
 <div class="content">
 <pre>heroku pg:psql
@@ -729,7 +730,7 @@ INSERT INTO users (username,password) VALUES('admin','$2a$10$tXMKF036p0ZYIxF/cJE
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-11-14 20:29:04 EST
+Last updated 2017-11-14 20:44:15 EST
 </div>
 </div>
 </body>
