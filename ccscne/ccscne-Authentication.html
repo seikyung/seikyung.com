@@ -510,7 +510,7 @@ Remember: NEVER store the password directly in the database.</p>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Modify <code>app.js</code>:</p>
+<p>Modify <code>app.js</code> (or <code>curl <a href="http://seikyung.com/ccscne/app.js" class="bare">http://seikyung.com/ccscne/app.js</a> -s -o app.js</code>):</p>
 <div class="listingblock">
 <div class="content">
 <pre>var express = require('express');
@@ -632,7 +632,7 @@ module.exports = app;</pre>
 </div>
 </li>
 <li>
-<p>Modify <code>routes/users.js</code>:</p>
+<p>Modify <code>routes/users.js</code> (or <code>curl <a href="http://seikyung.com/ccscne/users.js" class="bare">http://seikyung.com/ccscne/users.js</a> -s -o users.js</code>):</p>
 <div class="listingblock">
 <div class="content">
 <pre>var express = require('express');
@@ -749,7 +749,7 @@ module.exports = router;</pre>
 </div>
 </li>
 <li>
-<p>Create <code>views/login.hbs</code> and save:</p>
+<p>Create <code>views/login.hbs</code> and save (or <code>curl <a href="http://seikyung.com/ccscne/login.hbs" class="bare">http://seikyung.com/ccscne/login.hbs</a> -s -o login.hbs</code>):</p>
 <div class="listingblock">
 <div class="content">
 <pre>&lt;main class="container"&gt;
@@ -807,7 +807,7 @@ module.exports = router;</pre>
 </div>
 </li>
 <li>
-<p>Create <code>views/profile.hbs</code> and save:</p>
+<p>Create <code>views/profile.hbs</code> and save (or <code>curl <a href="http://seikyung.com/ccscne/profile.hbs" class="bare">http://seikyung.com/ccscne/profile.hbs</a> -s -o profile.hbs</code>):</p>
 <div class="listingblock">
 <div class="content">
 <pre>Welcome to your profile, {{person.username}}!
@@ -816,7 +816,7 @@ module.exports = router;</pre>
 </div>
 </li>
 <li>
-<p>Create <code>views/signup.hbs</code> and save:</p>
+<p>Create <code>views/signup.hbs</code> and save (or <code>curl <a href="http://seikyung.com/ccscne/signup.hbs" class="bare">http://seikyung.com/ccscne/signup.hbs</a> -s -o signup.hbs</code>):</p>
 <div class="listingblock">
 <div class="content">
 <pre>&lt;form method="post" action="signup"&gt;
@@ -831,7 +831,7 @@ module.exports = router;</pre>
 </div>
 </li>
 <li>
-<p>Create <code>views/user.hbs</code>:</p>
+<p>Create <code>views/user.hbs</code> (or <code>curl <a href="http://seikyung.com/ccscne/user.hbs" class="bare">http://seikyung.com/ccscne/user.hbs</a> -s -o user.hbs</code>):</p>
 <div class="listingblock">
 <div class="content">
 <pre>&lt;a href="/users/login"&gt;Log in&lt;/a&gt;&lt;br&gt;
@@ -872,7 +872,7 @@ module.exports = router;</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-04-18 02:50:05 UTC
+Last updated 2018-04-20 01:26:02 UTC
 </div>
 </div>
 </body>
