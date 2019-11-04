@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.6">
-<title>Relational Database application</title>
+<title>MongoDB application</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -437,13 +437,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article">
 <div id="header">
-<h1>Relational Database application</h1>
+<h1>MongoDB application</h1>
 </div>
 <div id="content">
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>This document shows how to make this example.</p>
+<p>Create an application using MongoDB.</p>
 </div>
 </div>
 </div>
@@ -459,7 +459,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Let&#8217;s create a new project</p>
 <div class="listingblock">
 <div class="content">
-<pre>express --hbs P4-Postgres</pre>
+<pre>express --hbs P5-Mongo</pre>
 </div>
 </div>
 </li>
@@ -467,7 +467,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Go into the project folder you created. After this step, assume you are in this folder.</p>
 <div class="listingblock">
 <div class="content">
-<pre>cd P4-Postgres</pre>
+<pre>cd P5-Mongo</pre>
 </div>
 </div>
 </li>
@@ -493,7 +493,7 @@ This command may take a while to run.</p>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>PostgreSQL, a database server.</p>
+<p><a href="https://docs.mongodb.com/manual/installation/">MongoDB, a database server</a>.</p>
 <div class="hdlist">
 <table>
 <tr>
@@ -501,12 +501,9 @@ This command may take a while to run.</p>
 Windows
 </td>
 <td class="hdlist2">
-<p><a href="http://www.enterprisedb.com/products-services-training/pgdownload#windows">Use the Postgres Installer</a>.</p>
+<p><a href="https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/#install-mdb-edition">Follow these instructions</a>.</p>
 <div class="paragraph">
-<p>The installer may ask for a password for the database. If so, REMEMBER YOUR PASSWORD!</p>
-</div>
-<div class="paragraph">
-<p>Then, Windows key &#8594; Type "Environment" &#8594; Add the <code>bin</code> directory of Postgres to your PATH (like this: <code>C:\Program Files\PostgreSQL\&lt;VERSION&gt;\bin</code>).</p>
+<p>Then, Windows key &#8594; Type "Environment" &#8594; Add the <code>bin</code> directory of MongoDB to your PATH (like this: <code>C:\Program Files\MongoDB\Server\&lt;VERSION&gt;\bin\</code>).</p>
 </div>
 </td>
 </tr>
@@ -515,16 +512,18 @@ Windows
 Mac
 </td>
 <td class="hdlist2">
-<p><a href="http://postgresapp.com/">Install Postgres.app</a>.</p>
+<p>Install MongoDB using Homebrew.</p>
 <div class="paragraph">
-<p>Move to Applications and Double-click to run.</p>
-</div>
-<div class="paragraph">
-<p>Then, from the command-line:</p>
+<p>From the Terminal:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>echo "export PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin" &gt;&gt; ~/.bash_profile</pre>
+<pre>/usr/bin/ruby -e \
+"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+brew tap mongodb/brew
+brew install mongodb-community@4.2
+brew services start mongodb-community@4.2</pre>
 </div>
 </div>
 </td>
@@ -533,11 +532,10 @@ Mac
 </div>
 </li>
 <li>
-<p>Install Node.js bindings to PostgreSQL (analogous to JDBC: Java API to connect to database).
-We will have a separate database: local and remote PSQL (We will visit this later).</p>
+<p>Install Node.js bindings to MongoDB (analogous to JDBC: Java API to connect to database).</p>
 <div class="listingblock">
 <div class="content">
-<pre>npm install pg --save</pre>
+<pre>npm install mongodb --save</pre>
 </div>
 </div>
 </li>
@@ -545,10 +543,7 @@ We will have a separate database: local and remote PSQL (We will visit this late
 <p>We will need to define DATABASE_URL into <code>.env</code> to access the database.</p>
 <div class="listingblock">
 <div class="content">
-<pre># Windows users only (replace password with the database password you created during installation)
-echo "DATABASE_URL='postgres://postgres:password@localhost/postgres'" &gt; .env
-# Mac users
-echo "DATABASE_URL='postgres://localhost'" &gt; .env</pre>
+<pre>echo "DATABASE_URL='mongodb://localhost:27017/'" &gt; .env</pre>
 </div>
 </div>
 </li>
@@ -590,34 +585,30 @@ The <code>dotenv</code> module appends variables defined in <code>.env</code> in
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Connect to the local database: You will need to start Postgres first
-(Windows users: go to <code>git bash</code> and you will need to provide a password)</p>
+<p>Connect to the local database: You will need to start MongoDB first
+(Windows users: go to <code>git bash</code> and you may need to provide a password)</p>
 <div class="listingblock">
 <div class="content">
 <pre># Windows users
-psql -U postgres
+mongo
 # Mac users
-psql</pre>
+mongo</pre>
 </div>
 </div>
 </li>
 <li>
-<p>Create table <code>book</code> (nope, it&#8217;s not normalized by any stretch):</p>
+<p>Insert rows into <code>book</code> (a MongoDB collection is like a SQL table):</p>
 <div class="listingblock">
 <div class="content">
-<pre>create table book (id serial primary key, author text, title text, published date, pages integer, language char(2));</pre>
-</div>
-</div>
-</li>
-<li>
-<p>Insert rows into <code>book</code>:</p>
-<div class="listingblock">
-<div class="content">
-<pre>insert into book(author,title,published,pages,language) values('Stephen King', 'Misery', '1988-01-01', 300, 'en');
-insert into book(author,title,published,pages,language) values('J.K. Rowling', 'Harry Potter', '1999-01-01', 3000, 'en');
-insert into book(author,title,published,pages,language) values('Taro Gomi', 'Everyone Poops', '1997-01-17', 27, 'en');
-insert into book(author,title,published,pages,language) values('Jeff Kinney', 'Diary of Wimpy Kid', '2007-04-01', 224, 'en');
-insert into book(author,title,published,pages,language) values('Malcolm Gladwell', 'Outliers', '2008-11-18',264, 'en');</pre>
+<pre>db.book.insertOne(
+ {author: "Stephen King", title: "Misery", published: "1988-01-01", pages:300, language: "en"}
+)
+db.book.insertMany([
+ {author: "J.K. Rowling", title: "Harry Potter", published: "1999-01-01", pages:3000, language: "en"},
+ {author: "Taro Gomi", title: "Everyone Poops", published: "1997-01-17", pages:27, language: "en"},
+ {author: "Jeff Kinney", title: "Diary of Wimpy Kid", published: "2007-04-01", pages:224, language: "en"},
+ {author: "Malcolm Gladwell", title: "Outliers", published: "2008-11-18", pages:264, language: "en"}
+]);</pre>
 </div>
 </div>
 </li>
@@ -625,10 +616,10 @@ insert into book(author,title,published,pages,language) values('Malcolm Gladwell
 <p>If you want to play with database:</p>
 <div class="listingblock">
 <div class="content">
-<pre>\? # help
-\dt; # display tables
-select * from book; # check if you insert properly
-\q # quit</pre>
+<pre>\help            # How to use MongoDB
+show collections # show collections in current database
+db.book.find();  # check if you inserted properly
+exit             # quit</pre>
 </div>
 </div>
 </li>
@@ -642,15 +633,17 @@ var router = express.Router();
 // Connect to process.env.DATABASE_URL when your app initializes:
 // Read only reference value (const)
 // get only Client class from pg package
-const Client = require('pg').Client;
+const MongoClient = require('mongodb').MongoClient;
 
-// create an instance from Client
-const client = new Client({
-  connectionString: process.env.DATABASE_URL
+// create a client instance connecting to the DATABASE_URL
+const client = new MongoClient(process.env.DATABASE_URL, {useUnifiedTopology: true});
+
+// Connect
+var db;
+client.connect((err, client) =&gt; {
+  if (err) return console.log(err);
+  db = client.db('test'); // whatever the database name is. Default is 'test'
 });
-
-// connect to the DATABASE_URL
-client.connect();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -660,9 +653,12 @@ router.get('/', function(req, res, next) {
 /* GET home page. */
 router.get('/books', function(req, response, next) {
   // client object enables issuing SQL queries
-  client.query('SELECT * FROM book', function(err, result){
-    if (err) {next(err);}
-    response.render('books',result);
+  db.collection('book').find().toArray(function(err, result){
+    if (err) {
+      next(err);
+    }
+    console.log(result);
+    response.render('books',{rows: result});
   });
 });
 
@@ -674,8 +670,7 @@ module.exports = router;</pre>
 <p>Add these lines to <code>app.js</code> and save:</p>
 <div class="listingblock">
 <div class="content">
-<pre>// add this line before var indexRouter = require('./routes/index');
-var env = require('dotenv').config();</pre>
+<pre>var env = require('dotenv').config();</pre>
 </div>
 </div>
 </li>
@@ -688,23 +683,22 @@ var env = require('dotenv').config();</pre>
 &lt;table id="myTable"&gt;
   &lt;thead&gt;
   &lt;tr&gt;&lt;th&gt;author&lt;/th&gt;&lt;th&gt;title&lt;/th&gt;&lt;th&gt;Published&lt;/th&gt;&lt;th&gt;Pages&lt;/th&gt;&lt;th&gt;Language&lt;/th&gt;&lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    {{#each rows}}
-      &lt;tr&gt;&lt;td&gt; {{ author }}&lt;/td&gt;
-          &lt;td&gt; {{ title }}&lt;/td&gt;
-          &lt;td&gt; {{ published }}&lt;/td&gt;
-          &lt;td&gt; {{ pages }}&lt;/td&gt;
-          &lt;td&gt; {{ language }}&lt;/td&gt;
-      &lt;/tr&gt;
-    {{/each}}
-  &lt;/tbody&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+{{#each rows}}
+  &lt;tr&gt;&lt;td&gt; {{ author }}&lt;/td&gt;
+      &lt;td&gt; {{ title }}&lt;/td&gt;
+      &lt;td&gt; {{ published }}&lt;/td&gt;
+      &lt;td&gt; {{ pages }}&lt;/td&gt;
+      &lt;td&gt; {{ language }}&lt;/td&gt;
+  &lt;/tr&gt;
+{{/each}}
+&lt;/tbody&gt;
 &lt;/table&gt;
 
 &lt;link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.css"&gt;
 &lt;script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"&gt;&lt;/script&gt;
 &lt;script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.js"&gt;&lt;/script&gt;
-
 &lt;script&gt;
 $(document).ready(function(){
     $('#myTable').DataTable();
@@ -728,10 +722,34 @@ $(document).ready(function(){
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_references">References</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><a href="https://docs.mongodb.com/manual/crud/" class="bare">https://docs.mongodb.com/manual/crud/</a></p>
+</li>
+<li>
+<p><a href="https://www.w3schools.com/nodejs/nodejs_mongodb.asp" class="bare">https://www.w3schools.com/nodejs/nodejs_mongodb.asp</a></p>
+</li>
+<li>
+<p><a href="https://mongodb.github.io/node-mongodb-native/3.3/quick-start/quick-start/" class="bare">https://mongodb.github.io/node-mongodb-native/3.3/quick-start/quick-start/</a></p>
+</li>
+<li>
+<p><a href="https://mlab.com/plans/pricing/#plan-type=sandbox" class="bare">https://mlab.com/plans/pricing/#plan-type=sandbox</a></p>
+</li>
+<li>
+<p><a href="https://zellwk.com/blog/crud-express-mongodb/" class="bare">https://zellwk.com/blog/crud-express-mongodb/</a></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-11-03 12:27:46 -0500
+Last updated 2019-11-04 13:30:54 -0500
 </div>
 </div>
 </body>
