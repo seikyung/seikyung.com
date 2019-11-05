@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.6">
-<title>Relational Database application</title>
+<title>Authentication application</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -437,7 +437,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article">
 <div id="header">
-<h1>Relational Database application</h1>
+<h1>Authentication application</h1>
 </div>
 <div id="content">
 <div id="preamble">
@@ -459,7 +459,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Let&#8217;s create a new project</p>
 <div class="listingblock">
 <div class="content">
-<pre>express --hbs P4-Postgres</pre>
+<pre>express --hbs P6-Authentication</pre>
 </div>
 </div>
 </li>
@@ -467,7 +467,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Go into the project folder you created. After this step, assume you are in this folder.</p>
 <div class="listingblock">
 <div class="content">
-<pre>cd P4-Postgres</pre>
+<pre>cd P6-Authentication</pre>
 </div>
 </div>
 </li>
@@ -487,54 +487,10 @@ This command may take a while to run.</p>
 <div class="sect1">
 <h2 id="_database_setup">Database setup</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>Download and install:</p>
-</div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>PostgreSQL, a database server.</p>
-<div class="hdlist">
-<table>
-<tr>
-<td class="hdlist1">
-Windows
-</td>
-<td class="hdlist2">
-<p><a href="http://www.enterprisedb.com/products-services-training/pgdownload#windows">Use the Postgres Installer</a>.</p>
-<div class="paragraph">
-<p>The installer may ask for a password for the database. If so, REMEMBER YOUR PASSWORD!</p>
-</div>
-<div class="paragraph">
-<p>Then, Windows key &#8594; Type "Environment" &#8594; Add the <code>bin</code> directory of Postgres to your PATH (like this: <code>C:\Program Files\PostgreSQL\&lt;VERSION&gt;\bin</code>).</p>
-</div>
-</td>
-</tr>
-<tr>
-<td class="hdlist1">
-Mac
-</td>
-<td class="hdlist2">
-<p><a href="http://postgresapp.com/">Install Postgres.app</a>.</p>
-<div class="paragraph">
-<p>Move to Applications and Double-click to run.</p>
-</div>
-<div class="paragraph">
-<p>Then, from the command-line:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>echo "export PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin" &gt;&gt; ~/.bash_profile</pre>
-</div>
-</div>
-</td>
-</tr>
-</table>
-</div>
-</li>
-<li>
-<p>Install Node.js bindings to PostgreSQL (analogous to JDBC: Java API to connect to database).
-We will have a separate database: local and remote PSQL (We will visit this later).</p>
+<p>Install Node.js bindings to PostgreSQL .</p>
 <div class="listingblock">
 <div class="content">
 <pre>npm install pg --save</pre>
@@ -559,25 +515,47 @@ echo "DATABASE_URL='postgres://localhost'" &gt; .env</pre>
 <pre>npm install dotenv --save</pre>
 </div>
 </div>
-<div class="paragraph">
-<p>We just created the <code>.env</code> file to store configuration data.
-Node.js can access system environment variables via <code>process.env</code>.
-The <code>dotenv</code> module appends variables defined in <code>.env</code> into <code>process.env</code>, to get configuration data into your code.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_authentication_dependencies_setup">Authentication dependencies setup</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Install <code>bcryptjs</code>. This encrypts plain text password. Reference: <a href="https://www.npmjs.com/package/bcryptjs" class="bare">https://www.npmjs.com/package/bcryptjs</a></p>
+<div class="listingblock">
+<div class="content">
+<pre>npm install bcryptjs --save</pre>
+</div>
 </div>
 </li>
 <li>
-<p>Let&#8217;s test it in your terminal.</p>
-<div class="listingblock">
-<div class="content">
-<pre>node
-&gt; process.env # you will see all environment variables
-&gt; require('dotenv').config();
-&gt; process.env # you will see all environment variables as well as DATABASE_URL
-&gt; .exit # exit from node</pre>
-</div>
+<p>Install three packages</p>
+<div class="paragraph">
+<p><code>passport.js</code>. Passport is authentication middleware for Node.js (Reference: <a href="http://www.passportjs.org/" class="bare">http://www.passportjs.org/</a>)</p>
 </div>
 <div class="paragraph">
-<p>Did you see all environment variables including DATABASE_URL?</p>
+<p><code>passport-local</code>: local authentication (not using third-party authentication, such as passport-google, passport-twitter, passport-github&#8230;&#8203;)</p>
+</div>
+<div class="paragraph">
+<p><code>express-flash</code>: reference: <a href="https://www.npmjs.com/package/express-flash" class="bare">https://www.npmjs.com/package/express-flash</a></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>npm install passport passport-local express-flash --save</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Install session middleware.  Authentication requires session middleware</p>
+<div class="listingblock">
+<div class="content">
+<pre>npm install express-session --save</pre>
+</div>
 </div>
 </li>
 </ol>
@@ -585,7 +563,7 @@ The <code>dotenv</code> module appends variables defined in <code>.env</code> in
 </div>
 </div>
 <div class="sect1">
-<h2 id="_example_books">Example: Books</h2>
+<h2 id="_create_a_table_and_insert_rows">Create a table and insert rows</h2>
 <div class="sectionbody">
 <div class="olist arabic">
 <ol class="arabic">
@@ -602,114 +580,393 @@ psql</pre>
 </div>
 </li>
 <li>
-<p>Create table <code>book</code> (nope, it&#8217;s not normalized by any stretch):</p>
+<p>Once connected, create a <code>user</code> table.
+Remember: NEVER store the password directly in the database.</p>
 <div class="listingblock">
 <div class="content">
-<pre>create table book (id serial primary key, author text, title text, published date, pages integer, language char(2));</pre>
+<pre>CREATE TABLE users ("id" serial primary key, username text, password text);</pre>
 </div>
 </div>
 </li>
 <li>
-<p>Insert rows into <code>book</code>:</p>
+<p>Insert a user (admin) with password hello (for testing purposes only):</p>
 <div class="listingblock">
 <div class="content">
-<pre>insert into book(author,title,published,pages,language) values('Stephen King', 'Misery', '1988-01-01', 300, 'en');
-insert into book(author,title,published,pages,language) values('J.K. Rowling', 'Harry Potter', '1999-01-01', 3000, 'en');
-insert into book(author,title,published,pages,language) values('Taro Gomi', 'Everyone Poops', '1997-01-17', 27, 'en');
-insert into book(author,title,published,pages,language) values('Jeff Kinney', 'Diary of Wimpy Kid', '2007-04-01', 224, 'en');
-insert into book(author,title,published,pages,language) values('Malcolm Gladwell', 'Outliers', '2008-11-18',264, 'en');</pre>
+<pre>INSERT INTO users (username,password) VALUES('admin','$2a$10$tXMKF036p0ZYIxF/cJEHauw/TFrcho4DXy41Kt12D3Lbnzr221hmK');</pre>
+</div>
+</div>
+<div class="hdlist">
+<table>
+<tr>
+<td class="hdlist1">
+How to create an encrypted password?
+</td>
+<td class="hdlist2">
+<p>Create a file <code>bcrypt.js</code></p>
+<div class="listingblock">
+<div class="content">
+<pre>var bcrypt = require('bcryptjs');
+var salt = bcrypt.genSaltSync(10);
+var hash = bcrypt.hashSync("hello", salt);
+console.log(salt);
+console.log(hash);</pre>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+When you run <code>bcrypt.js</code>, you will see encrypted 'hello'
+</td>
+<td class="hdlist2">
+<div class="listingblock">
+<div class="content">
+<pre>node bcrypt.js</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Did you see it?</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_lets_modify_files">Let&#8217;s modify files</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Modify <code>app.js</code>:</p>
+<div class="listingblock">
+<div class="content">
+<pre>.
+.
+.
+
+var index = require('./routes/index');
+var users = require('./routes/users');
+
+var app = express();
+
+// new stuff starts here
+var session = require('express-session');
+var flash = require('express-flash');
+var env = require('dotenv').config();
+
+const Client = require('pg').Client;
+const client = new Client({
+  connectionString: process.env.DATABASE_URL
+});
+client.connect(); //connect to database
+
+// javascript password encryption (https://www.npmjs.com/package/bcryptjs)
+var bcrypt = require('bcryptjs');
+//  authentication middleware
+var passport = require('passport');
+// authentication locally (not using passport-google, passport-twitter, passport-github...)
+var LocalStrategy = require('passport-local').Strategy;
+
+passport.use(new LocalStrategy({
+    usernameField: 'username', // form field
+    passwordField: 'password'
+  },
+  function(username, password, done) {
+    client.query('SELECT * FROM users WHERE username = $1', [username], function(err, result) {
+      if (err) {
+        console.log("SQL error");
+        //next(err);
+        return done(null,false, {message: 'sql error'});
+      }
+      if (result.rows.length &gt; 0) {
+        var matched = bcrypt.compareSync(password, result.rows[0].password);
+        if (matched) {
+          console.log("Successful login, ", result.rows[0]);
+          return done(null, result.rows[0]);
+        }
+      }
+      console.log("Bad username or password");
+      // returning to passport
+      // message is passport key
+      return done(null, false, {message: 'Bad username or password'});
+    });
+  })
+);
+
+// Store user information into session
+passport.serializeUser(function(user, done) {
+  //return done(null, user.id);
+  return done(null, user);
+});
+
+// Get user information out of session
+passport.deserializeUser(function(id, done) {
+  return done(null, id);
+});
+
+// Use the session middleware
+// configure session object to handle cookie
+// req.flash() requires sessions
+app.use(session({
+  secret: 'COMP335',
+  resave:false,
+  saveUninitialized: true,
+}));
+
+app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+// new stuff ends here
+.
+.
+.</pre>
 </div>
 </div>
 </li>
 <li>
-<p>If you want to play with database:</p>
-<div class="listingblock">
-<div class="content">
-<pre>\? # help
-\dt; # display tables
-select * from book; # check if you insert properly
-\q # quit</pre>
-</div>
-</div>
-</li>
-<li>
-<p>Create <code>routes/index.js</code> and save:</p>
+<p>Modify <code>routes/users.js</code>:</p>
 <div class="listingblock">
 <div class="content">
 <pre>var express = require('express');
 var router = express.Router();
 
-// Connect to process.env.DATABASE_URL when your app initializes:
-// Read only reference value (const)
-// get only Client class from pg package
+// New stuff
+var env = require('dotenv').config();
 const Client = require('pg').Client;
-
-// create an instance from Client
 const client = new Client({
   connectionString: process.env.DATABASE_URL
 });
+client.connect(); //connect to database
 
-// connect to the DATABASE_URL
-client.connect();
+var passport = require('passport');
+var bcrypt = require('bcryptjs');
+// new stuff ends here
 
-/* GET home page. */
+// modify this module
+/* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  //res.send('respond with a resource');
+  res.render('user', { user: req.user }); //display user.hbs
 });
 
-/* GET home page. */
-router.get('/books', function(req, response, next) {
-  // client object enables issuing SQL queries
-  client.query('SELECT * FROM book', function(err, result){
-    if (err) {next(err);}
-    response.render('books',result);
+// new stuff again
+router.get('/logout', function(req, res){
+    req.logout(); //passport provide it
+    res.redirect('/users'); // Successful. redirect to localhost:3000/users
+});
+
+function loggedIn(req, res, next) {
+  if (req.user) {
+    next(); // req.user exists, go to the next function (right after loggedIn)
+  } else {
+    res.redirect('/users/login'); // user doesn't exists redirect to localhost:3000/users/login
+  }
+}
+
+router.get('/profile',loggedIn, function(req, res){
+      // req.user: passport middleware adds "user" object to HTTP req object
+      res.render('profile', { person: req.user });
+});
+
+function notLoggedIn(req, res, next) {
+  if (!req.user) {
+    next();
+  } else {
+    res.redirect('/users/profile');
+  }
+}
+
+router.get('/login', notLoggedIn, function(req, res){
+    //success is set true in sign up page
+    //req.flash('error') is mapped to 'message' from passport middleware
+    res.render('login', {success:req.query.success, errorMessage: req.flash('error')});
+});
+
+router.post('/login',
+  // This is where authentication happens - app.js
+  // authentication locally (not using passport-google, passport-twitter, passport-github...)
+  passport.authenticate('local', { failureRedirect: 'login', failureFlash:true }),
+  function(req, res,next) {
+    res.redirect('/users/profile'); // Successful. redirect to localhost:3000/users/profile
+});
+
+router.get('/signup',function(req, res) {
+    // If logged in, go to profile page
+    if(req.user) {
+      return res.redirect('/users/profile');
+    }
+    res.render('signup'); // signup.hbs
+});
+// check if username has spaces, DB will whine about that
+function validUsername(username) {
+  var login = username.trim(); // remove spaces
+  return login !== '' &amp;&amp; login.search(/ /) &lt; 0;
+}
+
+function createUser(req, res, next){
+
+  var salt = bcrypt.genSaltSync(10);
+  var pwd = bcrypt.hashSync(req.body.password, salt);
+
+  client.query('INSERT INTO users (username, password) VALUES($1, $2)', [req.body.username, pwd], function(err, result) {
+    if (err) {
+      console.log("unable to query INSERT");
+      return next(err); // throw error to error.hbs.
+    }
+    console.log("User creation is successful");
+    res.redirect('/users/login?success=true');
+  });
+}
+
+router.post('/signup', function(req, res, next) {
+  // Reject users
+  if (!validUsername(req.body.username)) {
+    return res.render('signup');
+  }
+
+  client.query('SELECT * FROM users WHERE username=$1',[req.body.username], function(err,result){
+    if (err) {
+      console.log("sql error ");
+      next(err); // throw error to error.hbs.
+    }
+    else if (result.rows.length &gt; 0) {
+      console.log("user exists");
+      res.render('signup', { errorMessage: "true" });
+    }
+    else {
+      console.log("no user with that name");
+      createUser(req, res, next);
+    }
   });
 });
+// new stuff ends here
 
 module.exports = router;</pre>
 </div>
 </div>
 </li>
 <li>
-<p>Add these lines to <code>app.js</code> and save:</p>
+<p>Create <code>views/login.hbs</code> and save:</p>
 <div class="listingblock">
 <div class="content">
-<pre>// add this line before var indexRouter = require('./routes/index');
-var env = require('dotenv').config();</pre>
+<pre>&lt;main class="text-center"&gt;
+  &lt;form class="form-signin" method="post" action="login"&gt;
+    &lt;h1 class="h3 mb-3 font-weight-normal"&gt;Sign in&lt;/h1&gt;
+    &lt;input class="form-control" type="text" name="username" placeholder="User name" required autofocus&gt;
+    &lt;input class="form-control" type="password" name="password" placeholder="Password" required&gt;
+    &lt;div class="checkbox mb-3"&gt;
+      &lt;label&gt;
+        &lt;input type="checkbox" value="remember-me"&gt; Remember me
+      &lt;/label&gt;
+    &lt;/div&gt;
+    &lt;button class="btn btn-lg btn-primary btn-block" type="submit"&gt;Sign in&lt;/button&gt;
+  &lt;/form&gt;
+  &lt;/main&gt;
+&lt;!-- if you don't want bootstraps --&gt;
+&lt;!--
+&lt;form method="post" action="login"&gt;
+&lt;input type="text" name="username" placeholder="User name"&gt;&lt;br&gt;
+&lt;input type="password" name="password" placeholder="Password"&gt;&lt;br&gt;
+&lt;input type="submit" value="Log in"&gt;
+&lt;/form&gt;
+--&gt;
+{{#if success}}
+&lt;p&gt;Successfully created an account. Please log in&lt;/p&gt;
+{{/if}}
+
+{{#if errorMessage}}
+&lt;p&gt;{{errorMessage}}&lt;/p&gt;
+{{/if}}</pre>
 </div>
 </div>
 </li>
 <li>
-<p>Add these lines to <code>views/books.hbs</code> and save:</p>
+<p>Create <code>public/login.css</code> and save:</p>
 <div class="listingblock">
 <div class="content">
-<pre>&lt;h2&gt;Book Database&lt;/h2&gt;
-
-&lt;table id="myTable"&gt;
-  &lt;thead&gt;
-  &lt;tr&gt;&lt;th&gt;author&lt;/th&gt;&lt;th&gt;title&lt;/th&gt;&lt;th&gt;Published&lt;/th&gt;&lt;th&gt;Pages&lt;/th&gt;&lt;th&gt;Language&lt;/th&gt;&lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    {{#each rows}}
-      &lt;tr&gt;&lt;td&gt; {{ author }}&lt;/td&gt;
-          &lt;td&gt; {{ title }}&lt;/td&gt;
-          &lt;td&gt; {{ published }}&lt;/td&gt;
-          &lt;td&gt; {{ pages }}&lt;/td&gt;
-          &lt;td&gt; {{ language }}&lt;/td&gt;
-      &lt;/tr&gt;
-    {{/each}}
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"&gt;
-&lt;script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"&gt;&lt;/script&gt;
-&lt;script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"&gt;&lt;/script&gt;
-
-&lt;script&gt;
-$(document).ready(function(){
-    $('#myTable').DataTable();
-});
-&lt;/script&gt;</pre>
+<pre>main {
+  height: 100%;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #f5f5f5;
+}
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+.form-signin .checkbox {
+  font-weight: 400;
+}
+.form-signin .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Modify <code>views/layout.hbs</code>:</p>
+<div class="listingblock">
+<div class="content">
+<pre>  &lt;link rel='stylesheet' href='/stylesheets/login.css' /&gt;
+  &lt;link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"&gt;</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Create <code>views/profile.hbs</code> and save:</p>
+<div class="listingblock">
+<div class="content">
+<pre>Welcome to your profile, {{person.username}}!
+&lt;a href="/users"&gt;Back to User menu&lt;/a&gt;</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Create <code>views/signup.hbs</code> and save:</p>
+<div class="listingblock">
+<div class="content">
+<pre>&lt;form method="post" action="signup"&gt;
+&lt;input type="text" name="username" placeholder="User name"&gt;&lt;br&gt;
+&lt;input type="password" name="password" placeholder="Password"&gt;&lt;br&gt;
+&lt;input type="submit" value="Sign Up"&gt;
+&lt;/form&gt;
+{{#if errorMessage}}
+&lt;p&gt;Username already exists&lt;/p&gt;
+{{/if}}</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Create <code>views/user.hbs</code>:</p>
+<div class="listingblock">
+<div class="content">
+<pre>&lt;a href="/users/login"&gt;Log in&lt;/a&gt;&lt;br&gt;
+&lt;a href="/users/signup"&gt;Sign up&lt;/a&gt;&lt;br&gt;
+&lt;a href="/users/logout"&gt;Log out&lt;/a&gt;&lt;br&gt;
+&lt;a href="/users/profile"&gt;User profile&lt;/a&gt;
+{{#if user.username}}
+&lt;p&gt;You are logged in as {{user.username}}&lt;/p&gt;
+{{else}}
+&lt;p&gt;Please log in or sign up&lt;/p&gt;
+{{/if}}</pre>
 </div>
 </div>
 </li>
@@ -722,7 +979,7 @@ $(document).ready(function(){
 </div>
 </li>
 <li>
-<p>Go to <a href="http://localhost:3000/books" class="bare">http://localhost:3000/books</a></p>
+<p>Go to <a href="http://localhost:3000/users" class="bare">http://localhost:3000/users</a></p>
 </li>
 </ol>
 </div>
@@ -731,7 +988,7 @@ $(document).ready(function(){
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-11-05 10:24:03 -0500
+Last updated 2019-11-03 15:50:33 -0500
 </div>
 </div>
 </body>
