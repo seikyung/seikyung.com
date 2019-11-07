@@ -589,7 +589,7 @@ Remember: NEVER store the password directly in the database.</p>
 </div>
 </li>
 <li>
-<p>Insert a user (admin) with password hello (for testing purposes only):</p>
+<p>Insert a user (admin) with password hello (<strong>for TESTING purposes only</strong>):</p>
 <div class="listingblock">
 <div class="content">
 <pre>INSERT INTO users (username,password) VALUES('admin','$2a$10$tXMKF036p0ZYIxF/cJEHauw/TFrcho4DXy41Kt12D3Lbnzr221hmK');</pre>
@@ -934,7 +934,9 @@ module.exports = router;</pre>
 <p>Create <code>views/profile.hbs</code> and save:</p>
 <div class="listingblock">
 <div class="content">
-<pre>Welcome to your profile, {{person.username}}!
+<pre>&lt;h2&gt;Welcome to your profile, {{person.username}}! &lt;/h2&gt;
+&lt;h3&gt;Feel free to make this page user friendly.&lt;/h3&gt;
+&lt;br&gt;
 &lt;a href="/users"&gt;Back to User menu&lt;/a&gt;</pre>
 </div>
 </div>
@@ -943,7 +945,10 @@ module.exports = router;</pre>
 <p>Create <code>views/signup.hbs</code> and save:</p>
 <div class="listingblock">
 <div class="content">
-<pre>&lt;form method="post" action="signup"&gt;
+<pre>&lt;h3&gt; This is sign up page &lt;/h3&gt;
+&lt;h3&gt;Feel free to make this page user friendly.&lt;/h3&gt;
+&lt;/br&gt;
+&lt;form method="post" action="signup"&gt;
 &lt;input type="text" name="username" placeholder="User name"&gt;&lt;br&gt;
 &lt;input type="password" name="password" placeholder="Password"&gt;&lt;br&gt;
 &lt;input type="submit" value="Sign Up"&gt;
@@ -962,10 +967,11 @@ module.exports = router;</pre>
 &lt;a href="/users/signup"&gt;Sign up&lt;/a&gt;&lt;br&gt;
 &lt;a href="/users/logout"&gt;Log out&lt;/a&gt;&lt;br&gt;
 &lt;a href="/users/profile"&gt;User profile&lt;/a&gt;
+
 {{#if user.username}}
-&lt;p&gt;You are logged in as {{user.username}}&lt;/p&gt;
+    &lt;h3&gt;You are logged in as {{user.username}}&lt;/h3&gt;
 {{else}}
-&lt;p&gt;Please log in or sign up&lt;/p&gt;
+    &lt;h3&gt;Please log in or sign up&lt;/h3&gt;
 {{/if}}</pre>
 </div>
 </div>
@@ -988,7 +994,7 @@ module.exports = router;</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-11-03 15:50:33 -0500
+Last updated 2019-11-07 10:18:41 -0500
 </div>
 </div>
 </body>
