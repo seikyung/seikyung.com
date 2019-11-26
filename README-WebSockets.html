@@ -499,16 +499,27 @@ This command may take a while to run.</p>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>In <code>app.js</code>, add this:</p>
+<p>In <code>index.js</code> add this:</p>
 <div class="listingblock">
 <div class="content">
-<pre>...
+<pre>router.get('/chat', function(req, res, next) {
+  // Pass Server-side PORT number to Client-side
+  res.render('chat', { title: 'Express', port: process.env.PORT || 3000 });
+});</pre>
+</div>
+</div>
+</li>
+<li>
+<p>In <code>bin/www</code>, add this:</p>
+<div class="listingblock">
+<div class="content">
+<pre>/**
+ * Listen on provided port, on all network interfaces.
+ */
 
-// This URL is only for back-end (Node.js) Websocket API (different from front end although it has similarities)
-// https://www.npmjs.com/package/ws
-// Import WebSocket package
-const WebSocket = require('ws');
-const wss = new WebSocket.Server({ port: 8080 }); // Here, we're using port number 8080
+require('dotenv').config();
+const WebSocket = require('ws');    // Import WebSocket package
+const wss = new WebSocket.Server({ 'server': server });
 
 // When a web socket opens with front-end, call function connection(ws)
 wss.on('connection', function connection(ws) {
@@ -523,21 +534,12 @@ wss.on('connection', function connection(ws) {
       }
     });
   });
-});
-// New stuff ends here
-
-
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
-var app = express();
-
-...</pre>
+});</pre>
 </div>
 </div>
 </li>
 <li>
-<p>Replace the contents of <code>views/index.hbs</code> and with this and save:</p>
+<p><code>views/chat.hbs</code></p>
 <div class="listingblock">
 <div class="content">
 <pre>&lt;h1&gt;Chat&lt;/h1&gt;
@@ -569,8 +571,20 @@ var log = function (event) {
 }
 // This URL is only for front-end websocket API
 // https://developer.mozilla.org/en-US/docs/Web/API/WebSocket
-var url = 'ws://localhost:8080/echo';
-var sock = new WebSocket(url); // WebSocket Constructor with port number 8080
+
+// we will need to use same Server-side and Client-side port number
+// Note that I am using backticks (`), not single quote(')
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals
+
+// This will look like ws://localhost:3001/chat OR
+// ws://randomSubUrl.herokuapp.com/chat
+var HOST;
+if (location.hostname === "localhost") {
+    HOST = `ws://${location.hostname}:{{ port }}/chat`;
+} else {
+    HOST = `wss://${location.hostname}/chat`;
+}
+var sock = new WebSocket(HOST);
 
 // Register events: open, message
 // Fired when a connection with a WebSocket is opened.
@@ -647,7 +661,7 @@ npm start</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-11-17 17:37:19 -0500
+Last updated 2019-11-25 19:21:35 -0500
 </div>
 </div>
 </body>
