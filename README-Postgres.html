@@ -504,10 +504,16 @@ Windows
 <td class="hdlist2">
 <p><a href="https://www.postgresql.org/download/windows/">Use the Postgres Installer</a>.</p>
 <div class="paragraph">
-<p>The installer may ask for a password for the database. If so, REMEMBER YOUR PASSWORD!</p>
+<p>The installer may ask for a password (e.g., postgres) for the database. If so, REMEMBER!</p>
+</div>
+<div class="paragraph">
+<p>The installer may ask for a port number(e.g., 5432) for the database. If so, REMEMBER!</p>
 </div>
 <div class="paragraph">
 <p>Then, Windows key &#8594; Type "Environment" &#8594; Add the <code>bin</code> directory of Postgres to your PATH (like this: <code>C:\Program Files\PostgreSQL\&lt;VERSION&gt;\bin</code>).</p>
+</div>
+<div class="paragraph">
+<p>If you don&#8217;t know why we do this step, ask!</p>
 </div>
 </td>
 </tr>
@@ -687,7 +693,7 @@ module.exports = router;</pre>
 <p>Add these lines to <code>app.js</code> and save:</p>
 <div class="listingblock">
 <div class="content">
-<pre>// add this line before var indexRouter = require('./routes/index');
+<pre>// add this line BEFORE var indexRouter = require('./routes/index');
 var env = require('dotenv').config();</pre>
 </div>
 </div>
@@ -795,7 +801,7 @@ function error(){
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-03-28 09:08:43 -0400
+Last updated 2022-03-28 09:37:38 -0400
 </div>
 </div>
 </body>
