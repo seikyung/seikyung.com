@@ -553,7 +553,9 @@ echo "DATABASE_URL='postgres://localhost'" &gt; .env</pre>
 <li>
 <p>Install the <a href="https://devcenter.heroku.com/articles/heroku-cli">Heroku CLI</a>, to deploy to Heroku.</p>
 <div class="paragraph">
-<p>Just follow instruction from "download and installation" part only.</p>
+<p>Just follow instruction from "download and installation" part only.
+It will automatically create <strong>$PATH</strong> environment variable.
+You will need to either reopen gitbash (Windows users) or run <code>hash -r</code> command to rehash <strong>$PATH</strong> variables</p>
 </div>
 </li>
 <li>
@@ -796,7 +798,7 @@ const client = (() =&gt; {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-04-03 19:40:26 -0400
+Last updated 2022-04-04 09:24:00 -0400
 </div>
 </div>
 </body>
