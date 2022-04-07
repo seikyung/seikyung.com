@@ -546,7 +546,7 @@ echo "DATABASE_URL='postgres://localhost'" &gt; .env</pre>
 <h2 id="_setup_heroku">Setup Heroku</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="https://heroku.com">Heroku</a> is one of many modern web hosting services, and it uses git for deployment.</p>
+<p><a href="https://heroku.com">Heroku</a> is one of many modern web hosting services, and it uses <code>git</code> for deployment.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -554,9 +554,15 @@ echo "DATABASE_URL='postgres://localhost'" &gt; .env</pre>
 <p><a href="https://signup.heroku.com/login">Sign up</a> to create your free account on Heroku. Don&#8217;t forget to validate your email!</p>
 </li>
 <li>
-<p>Install the <a href="https://devcenter.heroku.com/articles/heroku-cli">Heroku CLI</a>, to deploy to Heroku.</p>
+<p>To deploy to Heroku.</p>
+<div class="listingblock">
+<div class="content">
+<pre>npm install -g heroku</pre>
+</div>
+</div>
 <div class="paragraph">
-<p>Just follow instruction from "download and installation" part only.
+<p><strong>Only if this command doesn&#8217;t work</strong>, install the <a href="https://devcenter.heroku.com/articles/heroku-cli">Heroku CLI</a>.
+Just follow instruction from "download and installation" part only.
 It will automatically create <strong>$PATH</strong> environment variable.
 You will need to either reopen gitbash (Windows users) or run <code>hash -r</code> command to rehash <strong>$PATH</strong> variables</p>
 </div>
@@ -728,7 +734,9 @@ INSERT INTO users (username,password,fullname,prefer) VALUES('admin','$2a$10$tXM
 Node that you will need to modify postgres connection part because we are using <strong>production</strong>, not <strong>local</strong></p>
 <div class="listingblock">
 <div class="content">
-<pre>// create an instance from Client
+<pre>require('dotenv').config();
+const Client = require('pg').Client;
+
 const client = (() =&gt; {
   if (process.env.NODE_ENV !== 'production') {
       return new Client({
@@ -742,7 +750,9 @@ const client = (() =&gt; {
               rejectUnauthorized: false
             }
       });
-  } })();</pre>
+  } })();
+
+client.connect();</pre>
 </div>
 </div>
 </li>
@@ -798,7 +808,7 @@ const client = (() =&gt; {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-04-04 09:25:51 -0400
+Last updated 2022-04-07 09:36:09 -0400
 </div>
 </div>
 </body>
