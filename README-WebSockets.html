@@ -504,7 +504,11 @@ This command may take a while to run.</p>
 <p>In <code>index.js</code> add this:</p>
 <div class="listingblock">
 <div class="content">
-<pre>// Pass Server-side PORT number to Client-side
+<pre>var express = require('express');
+var router = express.Router();
+var path = require('path');
+
+// Pass Server-side PORT number to Client-side
 router.get('/chat', function(req, res, next) {
   res.sendFile(path.join(__dirname,'..', 'public','chat.html'));
 });
@@ -512,7 +516,9 @@ router.get('/chat', function(req, res, next) {
 router.get('/port', function(req, res, next) {
   console.log(process.env.PORT || 3000);
   res.json({port: process.env.PORT || 3000});
-});</pre>
+});
+
+module.exports = router</pre>
 </div>
 </div>
 </li>
@@ -700,7 +706,7 @@ theForm.addEventListener("submit", function sendMsg(event) {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-04-25 18:18:20 -0400
+Last updated 2022-04-27 11:13:47 -0400
 </div>
 </div>
 </body>
