@@ -569,11 +569,11 @@ Do NOT run this command with <code>sudo</code>.</p>
 </li>
 <li>
 <p>Use <code>express-generator</code> to generate boilerplate code (minimal code to get things working).
-You can rename <code>Node1-Basics</code> to whatever you want. Note that we will create more projects later.
-So name it properly (i.e., ProjectNode2022/Node1-Basics).</p>
+You can rename <code>Node0-Basics</code> to whatever you want. Note that we will create more projects later.
+So name it properly (i.e., ProjectNode2024/Node0-Basics).</p>
 <div class="listingblock">
 <div class="content">
-<pre>express --no-view Node1-Basics</pre>
+<pre>express --no-view Node0-Basics</pre>
 </div>
 </div>
 </li>
@@ -581,7 +581,7 @@ So name it properly (i.e., ProjectNode2022/Node1-Basics).</p>
 <p>Go into the project folder you created. After this step, assume you are in this folder.</p>
 <div class="listingblock">
 <div class="content">
-<pre>cd Node1-Basics</pre>
+<pre>cd Node0-Basics</pre>
 </div>
 </div>
 </li>
@@ -707,6 +707,25 @@ Once it installs all dependencies successfully, you will see a new folder <code>
 <pre>npm install</pre>
 </div>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Did you get an <code>high severity vulnerabilities</code> error? If so, do this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>npm audit fix --force</pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
 </li>
 <li>
 <p>Run the server to see the example project.</p>
@@ -729,7 +748,7 @@ Once it installs all dependencies successfully, you will see a new folder <code>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-02-05 08:33:33 -0500
+Last updated 2024-02-13 10:51:01 -0500
 </div>
 </div>
 </body>
