@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.17">
+<meta name="generator" content="Asciidoctor 2.0.20">
 <title>Relational Database application</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -84,10 +84,10 @@ code{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;font-weight:400;
 ul,ol,dl{line-height:1.6;margin-bottom:1.25em;list-style-position:outside;font-family:inherit}
 ul,ol{margin-left:1.5em}
 ul li ul,ul li ol{margin-left:1.25em;margin-bottom:0}
-ul.square li ul,ul.circle li ul,ul.disc li ul{list-style:inherit}
-ul.square{list-style-type:square}
 ul.circle{list-style-type:circle}
 ul.disc{list-style-type:disc}
+ul.square{list-style-type:square}
+ul.circle ul:not([class]),ul.disc ul:not([class]),ul.square ul:not([class]){list-style:inherit}
 ol li ul,ol li ol{margin-left:1.25em;margin-bottom:0}
 dl dt{margin-bottom:.3125em;font-weight:bold}
 dl dd{margin-bottom:1.25em}
@@ -208,13 +208,10 @@ table.tableblock.fit-content>caption.title{white-space:nowrap;width:0}
 .admonitionblock>table td.content{padding-left:1.125em;padding-right:1.25em;border-left:1px solid #dddddf;color:rgba(0,0,0,.6);word-wrap:anywhere}
 .admonitionblock>table td.content>:last-child>:last-child{margin-bottom:0}
 .exampleblock>.content{border:1px solid #e6e6e6;margin-bottom:1.25em;padding:1.25em;background:#fff;border-radius:4px}
-.exampleblock>.content>:first-child{margin-top:0}
-.exampleblock>.content>:last-child{margin-bottom:0}
 .sidebarblock{border:1px solid #dbdbd6;margin-bottom:1.25em;padding:1.25em;background:#f3f3f2;border-radius:4px}
-.sidebarblock>:first-child{margin-top:0}
-.sidebarblock>:last-child{margin-bottom:0}
 .sidebarblock>.content>.title{color:#7a2518;margin-top:0;text-align:center}
-.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
+.exampleblock>.content>:first-child,.sidebarblock>.content>:first-child{margin-top:0}
+.exampleblock>.content>:last-child,.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
 .literalblock pre,.listingblock>.content>pre{border-radius:4px;overflow-x:auto;padding:1em;font-size:.8125em}
 @media screen and (min-width:768px){.literalblock pre,.listingblock>.content>pre{font-size:.90625em}}
 @media screen and (min-width:1280px){.literalblock pre,.listingblock>.content>pre{font-size:1em}}
@@ -393,7 +390,7 @@ b.conum *{color:inherit!important}
 dt,th.tableblock,td.content,div.footnote{text-rendering:optimizeLegibility}
 h1,h2,p,td.content,span.alt,summary{letter-spacing:-.01em}
 p strong,td.content strong,div.footnote strong{letter-spacing:-.005em}
-p,blockquote,dt,td.content,span.alt,summary{font-size:1.0625rem}
+p,blockquote,dt,td.content,td.hdlist1,span.alt,summary{font-size:1.0625rem}
 p{margin-bottom:1.25rem}
 .sidebarblock p,.sidebarblock dt,.sidebarblock td.content,p.tableblock{font-size:1em}
 .exampleblock>.content{background:#fffef7;border-color:#e0e0dc;box-shadow:0 1px 4px #e0e0dc}
@@ -704,16 +701,17 @@ var env = require('dotenv').config();</pre>
 <div class="content">
 <pre>&lt;html&gt;
 &lt;head&gt;
-  &lt;title&gt;Forms&lt;/title&gt;
+  &lt;title&gt;Database Books&lt;/title&gt;
 
-  &lt;link rel="stylesheet" href="/stylesheets/style.css"&gt;
-  &lt;link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css"&gt;
+  &lt;link rel="stylesheet" href="stylesheets/style.css"&gt;
 
+ &lt;link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css"&gt;
   &lt;script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"&gt;&lt;/script&gt;
 
-  &lt;script src="https://unpkg.com/react@17/umd/react.development.js"&gt;&lt;/script&gt;
-  &lt;script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"&gt;&lt;/script&gt;
-  &lt;script src="https://unpkg.com/@babel/standalone/babel.min.js"&gt;&lt;/script&gt;
+
+  &lt;script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin="anonymous"&gt;&lt;/script&gt;
+  &lt;script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin="anonymous"&gt;&lt;/script&gt;
+  &lt;script src="https://unpkg.com/@babel/standalone/babel.min.js" crossorigin="anonymous"&gt;&lt;/script&gt;
 
 &lt;/head&gt;
 
@@ -723,7 +721,7 @@ var env = require('dotenv').config();</pre>
   &lt;/div&gt;
 
   &lt;!-- Load our React component. --&gt;
-  &lt;script src="./javascripts/books.js" type="text/babel"&gt;&lt;/script&gt;
+  &lt;script src="javascripts/books.js" type="text/babel"&gt;&lt;/script&gt;
 
 &lt;/body&gt;
 &lt;/html&gt;</pre>
@@ -734,60 +732,92 @@ var env = require('dotenv').config();</pre>
 <p>Add these lines to <code>public/javascripts/books.js</code> and save:</p>
 <div class="listingblock">
 <div class="content">
-<pre>let xhttp = new XMLHttpRequest();
+<pre>const BookComponent = () =&gt; {
+  React.useEffect(() =&gt; {
+    fetch('/booksOut')
+      .then(response =&gt; {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json(); // assuming response is JSON
+      })
+      .then(data =&gt; {
+        // https://datatables.net/
+        // https://github.com/fiduswriter/Simple-DataTables
+        const dataTable = new simpleDatatables.DataTable("#myTable");
+        dataTable.insert(data);
+      })
+      .catch(error =&gt; {
+        console.error('There was a problem with the fetch operation:', error);
+      });
+  }, []); // Empty dependency array ensures this effect runs only once, after initial render
 
-xhttp.addEventListener("load",success);
-xhttp.addEventListener("error",error);
-xhttp.open("GET", "/booksOut", true);
-xhttp.send();
-
-/*
-https://reactjs.org/docs/lists-and-keys.html
-https://en.wikipedia.org/wiki/Map_(higher-order_function)
-*/
-function success(){
-  let data = JSON.parse(xhttp.response);
-
-  let rows = data.map((row) =&gt;
-    &lt;tr key={JSON.stringify(row)}&gt;
-        &lt;td&gt; { row.author }&lt;/td&gt;
-        &lt;td&gt; { row.title }&lt;/td&gt;
-        &lt;td&gt; { row.published }&lt;/td&gt;
-        &lt;td&gt; { row.pages }&lt;/td&gt;
-        &lt;td&gt; { row.language }&lt;/td&gt;
-    &lt;/tr&gt;
-  );
-  console.log(rows);
-  let element =(
+  return (
     &lt;div&gt;
       &lt;h2&gt;Book Database&lt;/h2&gt;
-        &lt;table id="myTable"&gt;
+      &lt;table id="myTable"&gt;
         &lt;thead&gt;
-        &lt;tr&gt;&lt;th&gt;author&lt;/th&gt;&lt;th&gt;title&lt;/th&gt;&lt;th&gt;Published&lt;/th&gt;&lt;th&gt;Pages&lt;/th&gt;&lt;th&gt;Language&lt;/th&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;th&gt;author&lt;/th&gt;&lt;th&gt;title&lt;/th&gt;&lt;th&gt;published&lt;/th&gt;&lt;th&gt;pages&lt;/th&gt;&lt;th&gt;language&lt;/th&gt;&lt;/tr&gt;
         &lt;/thead&gt;
-        &lt;tbody&gt;
-            {rows}
-        &lt;/tbody&gt;
-        &lt;/table&gt;
+      &lt;/table&gt;
     &lt;/div&gt;
   );
+};
 
-  ReactDOM.render(
-    element,
-    document.getElementById('books')
+const book = ReactDOM.createRoot(document.getElementById('books'));
+book.render(&lt;BookComponent /&gt;);
+
+/*
+const BookComponent = () =&gt; {
+  const [data, setData] = React.useState([]);
+
+  React.useEffect(() =&gt; {
+    fetch('/booksOut')
+      .then(response =&gt; {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json(); // assuming response is JSON
+      })
+      .then(data =&gt; {
+        setData(data);
+        console.log(data);
+      })
+      .catch(error =&gt; {
+        console.error('There was a problem with the fetch operation:', error);
+      });
+  }, []); // Empty dependency array ensures this effect runs only once, after initial render
+
+  //https://react.dev/learn/rendering-lists
+  //https://en.wikipedia.org/wiki/Map_(higher-order_function)
+  return (
+    &lt;div&gt;
+      &lt;h2&gt;Book Database&lt;/h2&gt;
+      &lt;table&gt;
+        &lt;thead&gt;
+          &lt;tr&gt;&lt;th&gt;Author&lt;/th&gt;&lt;th&gt;Title&lt;/th&gt;&lt;th&gt;Published&lt;/th&gt;&lt;th&gt;Pages&lt;/th&gt;&lt;th&gt;Language&lt;/th&gt;&lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+          {
+            data.map((row) =&gt; (
+              &lt;tr key={JSON.stringify(row)}&gt;
+                &lt;td&gt;{row.author}&lt;/td&gt;
+                &lt;td&gt;{row.title}&lt;/td&gt;
+                &lt;td&gt;{row.published}&lt;/td&gt;
+                &lt;td&gt;{row.pages}&lt;/td&gt;
+                &lt;td&gt;{row.language}&lt;/td&gt;
+              &lt;/tr&gt;
+            ))
+          }
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+    &lt;/div&gt;
   );
-  /*
-   datatable CSS
-   https://datatables.net/
-   https://github.com/fiduswriter/Simple-DataTables
-  */
-  const dataTable = new simpleDatatables.DataTable("#myTable");
+};
 
-}
-function error(){
-  console.log(xhttp.readyState);
-  console.log(xhttp.status);
-}</pre>
+const book = ReactDOM.createRoot(document.getElementById('books'));
+book.render(&lt;BookComponent /&gt;);
+*/</pre>
 </div>
 </div>
 </li>
@@ -809,7 +839,7 @@ function error(){
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-03-29 12:20:21 -0400
+Last updated 2024-03-21 13:10:42 -0400
 </div>
 </div>
 </body>

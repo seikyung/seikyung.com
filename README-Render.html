@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.17">
-<title>MongoDB application</title>
+<meta name="generator" content="Asciidoctor 2.0.20">
+<title>Cloud hosting setup instructions</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -84,10 +84,10 @@ code{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;font-weight:400;
 ul,ol,dl{line-height:1.6;margin-bottom:1.25em;list-style-position:outside;font-family:inherit}
 ul,ol{margin-left:1.5em}
 ul li ul,ul li ol{margin-left:1.25em;margin-bottom:0}
-ul.square li ul,ul.circle li ul,ul.disc li ul{list-style:inherit}
-ul.square{list-style-type:square}
 ul.circle{list-style-type:circle}
 ul.disc{list-style-type:disc}
+ul.square{list-style-type:square}
+ul.circle ul:not([class]),ul.disc ul:not([class]),ul.square ul:not([class]){list-style:inherit}
 ol li ul,ol li ol{margin-left:1.25em;margin-bottom:0}
 dl dt{margin-bottom:.3125em;font-weight:bold}
 dl dd{margin-bottom:1.25em}
@@ -208,13 +208,10 @@ table.tableblock.fit-content>caption.title{white-space:nowrap;width:0}
 .admonitionblock>table td.content{padding-left:1.125em;padding-right:1.25em;border-left:1px solid #dddddf;color:rgba(0,0,0,.6);word-wrap:anywhere}
 .admonitionblock>table td.content>:last-child>:last-child{margin-bottom:0}
 .exampleblock>.content{border:1px solid #e6e6e6;margin-bottom:1.25em;padding:1.25em;background:#fff;border-radius:4px}
-.exampleblock>.content>:first-child{margin-top:0}
-.exampleblock>.content>:last-child{margin-bottom:0}
 .sidebarblock{border:1px solid #dbdbd6;margin-bottom:1.25em;padding:1.25em;background:#f3f3f2;border-radius:4px}
-.sidebarblock>:first-child{margin-top:0}
-.sidebarblock>:last-child{margin-bottom:0}
 .sidebarblock>.content>.title{color:#7a2518;margin-top:0;text-align:center}
-.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
+.exampleblock>.content>:first-child,.sidebarblock>.content>:first-child{margin-top:0}
+.exampleblock>.content>:last-child,.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
 .literalblock pre,.listingblock>.content>pre{border-radius:4px;overflow-x:auto;padding:1em;font-size:.8125em}
 @media screen and (min-width:768px){.literalblock pre,.listingblock>.content>pre{font-size:.90625em}}
 @media screen and (min-width:1280px){.literalblock pre,.listingblock>.content>pre{font-size:1em}}
@@ -393,7 +390,7 @@ b.conum *{color:inherit!important}
 dt,th.tableblock,td.content,div.footnote{text-rendering:optimizeLegibility}
 h1,h2,p,td.content,span.alt,summary{letter-spacing:-.01em}
 p strong,td.content strong,div.footnote strong{letter-spacing:-.005em}
-p,blockquote,dt,td.content,span.alt,summary{font-size:1.0625rem}
+p,blockquote,dt,td.content,td.hdlist1,span.alt,summary{font-size:1.0625rem}
 p{margin-bottom:1.25rem}
 .sidebarblock p,.sidebarblock dt,.sidebarblock td.content,p.tableblock{font-size:1em}
 .exampleblock>.content{background:#fffef7;border-color:#e0e0dc;box-shadow:0 1px 4px #e0e0dc}
@@ -438,13 +435,34 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article">
 <div id="header">
-<h1>MongoDB application</h1>
+<h1>Cloud hosting setup instructions</h1>
 </div>
 <div id="content">
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Create an application using MongoDB.</p>
+<p>This document shows steps to configure cloud hosting for server-side web services. We will use <a href="https://render.com/">Render</a> .</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_preliminaries">Preliminaries</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You must have these installed already:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>Node.js</code>, a server-side JavaScript network application framework.</p>
+</li>
+<li>
+<p><code>Git</code>, a version control system.</p>
+</li>
+<li>
+<p><code>PostgreSQL</code>, a database server.</p>
+</li>
+</ol>
 </div>
 </div>
 </div>
@@ -460,7 +478,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Let&#8217;s create a new project</p>
 <div class="listingblock">
 <div class="content">
-<pre>express --no-view Node5-Mongo</pre>
+<pre>express --no-view Node7-Render</pre>
 </div>
 </div>
 </li>
@@ -468,7 +486,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Go into the project folder you created. After this step, assume you are in this folder.</p>
 <div class="listingblock">
 <div class="content">
-<pre>cd Node5-Mongo</pre>
+<pre>cd Node7-Render</pre>
 </div>
 </div>
 </li>
@@ -488,68 +506,13 @@ This command may take a while to run.</p>
 <div class="sect1">
 <h2 id="_database_setup">Database setup</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>Download and install:</p>
-</div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><a href="https://docs.mongodb.com/manual/installation/">MongoDB, a database server</a>.</p>
-<div class="hdlist">
-<table>
-<tr>
-<td class="hdlist1">
-Windows
-</td>
-<td class="hdlist2">
-<p><a href="https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/#install-mdb-edition">Follow these instructions</a>.</p>
-<div class="paragraph">
-<p>Then, Windows key &#8594; Type "Environment" &#8594; Add the <code>bin</code> directory of MongoDB to your PATH (like this: <code>C:\Program Files\MongoDB\Server\&lt;VERSION&gt;\bin\</code>).</p>
-</div>
-</td>
-</tr>
-<tr>
-<td class="hdlist1">
-Mac
-</td>
-<td class="hdlist2">
-<p>Install MongoDB using Homebrew.</p>
-<div class="paragraph">
-<p>From the Terminal:</p>
-</div>
+<p>Install Node.js bindings to PostgreSQL .</p>
 <div class="listingblock">
 <div class="content">
-<pre># if you never installed Homebrew (this is one command)
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-# this is one command
-/usr/bin/ruby -e \
-"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-
-brew tap mongodb/brew
-brew install mongodb-community@5.0
-brew services start mongodb-community@5.0
-
-# For older MacOS
-echo "export PATH=$PATH:/usr/local/Cellar/mongodb-community/5.0.6/bin" &gt;&gt; ~/.bash_profile
-
-# For newer MacOS
-# This will open text editor. Copy&amp;Paste:
-# export PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin:/usr/local/Cellar/mongodb-community/5.0.6/bin
-
-open -e ~/.zshrc</pre>
-</div>
-</div>
-</td>
-</tr>
-</table>
-</div>
-</li>
-<li>
-<p>Install Node.js bindings to MongoDB (analogous to JDBC: Java API to connect to database).</p>
-<div class="listingblock">
-<div class="content">
-<pre>npm install mongodb --save</pre>
+<pre>npm install pg --save</pre>
 </div>
 </div>
 </li>
@@ -557,7 +520,10 @@ open -e ~/.zshrc</pre>
 <p>We will need to define DATABASE_URL into <code>.env</code> to access the database.</p>
 <div class="listingblock">
 <div class="content">
-<pre>echo "DATABASE_URL='mongodb://localhost:27017/'" &gt; .env</pre>
+<pre># Windows users only (replace password with the database password you created during installation)
+echo "DATABASE_URL='postgres://postgres:password@localhost/postgres'" &gt; .env
+# Mac users
+echo "DATABASE_URL='postgres://localhost'" &gt; .env</pre>
 </div>
 </div>
 </li>
@@ -568,172 +534,236 @@ open -e ~/.zshrc</pre>
 <pre>npm install dotenv --save</pre>
 </div>
 </div>
-<div class="paragraph">
-<p>We just created the <code>.env</code> file to store configuration data.
-Node.js can access system environment variables via <code>process.env</code>.
-The <code>dotenv</code> module appends variables defined in <code>.env</code> into <code>process.env</code>, to get configuration data into your code.</p>
-</div>
-</li>
-<li>
-<p>Let&#8217;s test it in your terminal.</p>
-<div class="listingblock">
-<div class="content">
-<pre>node
-&gt; process.env # you will see all environment variables
-&gt; require('dotenv').config();
-&gt; process.env # you will see all environment variables as well as DATABASE_URL
-&gt; .exit # exit from node</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Did you see all environment variables including DATABASE_URL?</p>
-</div>
 </li>
 </ol>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_example_books">Example: Books</h2>
+<h2 id="_in_class_exercises">In-class exercises</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>Copy&amp;Paste necessary files to <code>Node7-Render</code></p>
+</div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Connect to the local database: You will need to start MongoDB first
-(Windows users: go to <code>git bash</code> and you may need to provide a password)</p>
-<div class="listingblock">
-<div class="content">
-<pre># Windows users
-mongo
-# Mac users
-mongo</pre>
-</div>
+<p>Forms (Node3-Forms)</p>
+<div class="paragraph">
+<p><code>madlibs.html</code>, <code>madlibs.js</code></p>
 </div>
 </li>
 <li>
-<p>Insert rows into <code>book</code> (a MongoDB collection is like a SQL table):</p>
-<div class="listingblock">
-<div class="content">
-<pre>db.book.insertOne(
- {author: "Stephen King", title: "Misery", published: "1988-01-01", pages:300, language: "en"}
-)
-db.book.insertMany([
- {author: "J.K. Rowling", title: "Harry Potter", published: "1999-01-01", pages:3000, language: "en"},
- {author: "Taro Gomi", title: "Everyone Poops", published: "1997-01-17", pages:27, language: "en"},
- {author: "Jeff Kinney", title: "Diary of Wimpy Kid", published: "2007-04-01", pages:224, language: "en"},
- {author: "Malcolm Gladwell", title: "Outliers", published: "2008-11-18", pages:264, language: "en"}
-]);</pre>
+<p>Database (Node4-Postgres)</p>
+<div class="paragraph">
+<p><code>cars.html</code>, <code>cars.js</code>, <code>cars.txt</code></p>
 </div>
+<div class="paragraph">
+<p>You will need to recreate tables and insert data to <strong>Render remote database server</strong>.</p>
 </div>
 </li>
 <li>
-<p>If you want to play with database:</p>
-<div class="listingblock">
-<div class="content">
-<pre>\help            # How to use MongoDB
-show collections # show collections in current database
-db.book.find();  # check if you inserted properly
-exit             # quit</pre>
+<p>Authenticate (Node6-Authentication)</p>
+<div class="paragraph">
+<p><code>app.js</code>, <code>users.js</code>, <code>index.html</code>, <code>login.html</code>, <code>profile.html</code>, <code>signup.html</code>, <code>login.js</code>, <code>signup.js</code>, <code>showPassword.js</code>, <code>login.css</code>, <code>style.css</code></p>
 </div>
+<div class="paragraph">
+<p>Install necessary packages: <code>cookie-session</code>, <code>bcryptjs</code>, <code>passport</code>, <code>passport-local</code>, <code>express-flash</code></p>
 </div>
 </li>
 <li>
-<p>Create <code>routes/index.js</code> and save:</p>
-<div class="listingblock">
-<div class="content">
-<pre>var express = require('express');
-var router = express.Router();
-var path = require('path');
-
-
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-
-// Connect to process.env.DATABASE_URL when your app initializes:
-// Read only reference value (const)
-// get only Client class from pg package
-const MongoClient = require('mongodb').MongoClient;
-
-// create a client instance connecting to the DATABASE_URL
-const client = new MongoClient(process.env.DATABASE_URL, {useUnifiedTopology: true});
-
-// Connect
-var db;
-client.connect((err, client) =&gt; {
-  if (err) return console.log(err);
-  db = client.db('test'); // whatever the database name is. Default is 'test'
-});
-
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-
-
-router.get('/books', function(req, res, next) {
-  res.sendFile(path.join(__dirname,'..', 'public','books.html'));
-});
-
-router.get('/booksOut', function(req, res, next) {
-  // client object enables issuing SQL queries
-  db.collection('book').find().toArray(function(err, result){
-    if (err) {next(err);}
-    console.log(result.rows);
-    res.json(result);
-  });
-});
-
-module.exports = router;</pre>
-</div>
-</div>
+<p>Update  <code>index.js</code> properly. Note that you will need to add for <code>madlibs</code> and <code>cars</code> exercises</p>
 </li>
-<li>
-<p>Add these lines to <code>app.js</code> and save:</p>
-<div class="listingblock">
-<div class="content">
-<pre>var env = require('dotenv').config();</pre>
+</ol>
 </div>
-</div>
-</li>
-<li>
-<p>Add (copy&amp;paste) two files from previous project Node4-Postgres <code>public/books.html</code> and <code>public/javascripts/books.js</code> :</p>
-</li>
-<li>
-<p>Run the server to see the example project.</p>
 <div class="listingblock">
 <div class="content">
 <pre>npm start</pre>
 </div>
 </div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Go to <a href="http://localhost:3000/" class="bare">http://localhost:3000/</a></p>
 </li>
 <li>
-<p>Go to <a href="http://localhost:3000/books" class="bare">http://localhost:3000/books</a></p>
+<p>Go to <a href="http://localhost:3000/madlibs" class="bare">http://localhost:3000/madlibs</a></p>
+</li>
+<li>
+<p>Go to <a href="http://localhost:3000/cars" class="bare">http://localhost:3000/cars</a></p>
+</li>
+<li>
+<p>Test all your exercises <strong>If not working, do not move on until you fix it.</strong></p>
 </li>
 </ol>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_references">References</h2>
+<h2 id="_setup_private_github_repository">Setup PRIVATE github Repository</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>Refer to <code>Assignment0</code> instruction, if you don&#8217;t remember how to.</p>
+</div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><a href="https://www.mongodb.com/docs/manual/tutorial/" class="bare">https://www.mongodb.com/docs/manual/tutorial/</a></p>
+<p>Create a repository for this project from <a href="https://github.com/">github</a> page. It must be <strong>PRIVATE repository</strong> since we will use this for the assignment and exam.</p>
+<div class="paragraph">
+<p>Name the repository properly since this name will be used for Cloud hosting server name later.
+I recommend using your <strong>LASTNAME</strong> or <strong>unique_name</strong>.</p>
+</div>
 </li>
 <li>
-<p><a href="https://www.mongodb.com/docs/manual/crud/" class="bare">https://www.mongodb.com/docs/manual/crud/</a></p>
+<p>You MUST be <strong>INSIDE /Node7-Render Directory</strong>. Run the following <code>git</code> command.</p>
+<div class="listingblock">
+<div class="content">
+<pre>git init
+echo "node_modules" &gt;&gt; .gitignore
+echo .env &gt;&gt; .gitignore
+echo package-lock.json &gt;&gt; .gitignore
+echo DS_Store &gt;&gt; .gitignore     #only for Mac users
+git status
+git add
+git commit -m "Initial commit"</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Note that you MUST copy and paste your own SSH link. If you don&#8217;t know where to find it, ask!</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>git remote add render git@github.com:yourGithubID/RepositoryName.git
+git push render main</pre>
+</div>
+</div>
 </li>
 <li>
-<p><a href="https://www.w3schools.com/nodejs/nodejs_mongodb.asp" class="bare">https://www.w3schools.com/nodejs/nodejs_mongodb.asp</a></p>
+<p>Check your <a href="https://github.com/">github</a> repository to see if everything is pushed properly</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_setup_render">Setup Render</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="https://render.com">Render</a> is one of many modern web hosting services, and it uses <code>git</code> for deployment.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><a href="https://dashboard.render.com/">Sign up</a> to create your free account on Render.</p>
 </li>
 <li>
-<p><a href="https://mongodb.github.io/node-mongodb-native/" class="bare">https://mongodb.github.io/node-mongodb-native/</a></p>
+<p>Create Web Service from Render</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/createWebService.png" alt="Create Web Service from Render" width="600" height="400">
+</div>
+</div>
 </li>
 <li>
-<p><a href="https://zellwk.com/blog/crud-express-mongodb/" class="bare">https://zellwk.com/blog/crud-express-mongodb/</a></p>
+<p>Connect to github repository from Render</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/createWebServiceFromGithub.png" alt="Connect to github repository from Render" width="600" height="400">
+</div>
+</div>
+</li>
+<li>
+<p>Create Postgres</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/createPostgres.png" alt="Create Postgres" width="600" height="400">
+</div>
+</div>
+</li>
+<li>
+<p>Get environment variable: DATABASE_URL</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/getDATABASE_URL.png" alt="Get environment variable: DATABASE_URL" width="600" height="400">
+</div>
+</div>
+</li>
+<li>
+<p>Set environment variable: DATABASE_URL</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/setDATABASE_URL.png" alt="Set environment variable: DATABASE_URL" width="600" height="400">
+</div>
+</div>
+</li>
+<li>
+<p>psql command to access remote database</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/psql_command.png" alt="psql command to access remote database" width="600" height="400">
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_database_on_remote_server">Database on Remote Server</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Last step is to replicate database on Render</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>You will need to recreate tables and insert data to Render remote database server. For example for the authentication,</p>
+<div class="listingblock">
+<div class="content">
+<pre>psql command here that copied from Render site (last screen shot)
+CREATE TABLE users ("id" serial primary key, username text, password text, fullname text, prefer text);
+
+INSERT INTO users (username,password,fullname,prefer) VALUES('admin','$2a$10$tXMKF036p0ZYIxF/cJEHauw/TFrcho4DXy41Kt12D3Lbnzr221hmK','Marshall Mathers','Eminem');
+
+\q</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Note that we have two databases; one on your laptop (local) and one on Render (remote)</strong></p>
+</div>
+</li>
+<li>
+<p>Submit your URL to Black Board. You ONLY need to submit BASE URL</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_assignment4">Assignment#4</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Here are the links that I am going to test (<strong>replace my URL to your URL</strong>):</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><a href="https://jung-6907.onrender.com/" class="bare">https://jung-6907.onrender.com/</a></p>
+<div class="paragraph">
+<p>Authentication (5 points)</p>
+</div>
+</li>
+<li>
+<p><a href="https://jung-6907.onrender.com/cars" class="bare">https://jung-6907.onrender.com/cars</a></p>
+<div class="paragraph">
+<p>Postgres (3 points)</p>
+</div>
+</li>
+<li>
+<p><a href="https://jung-6907.onrender.com/madlibs" class="bare">https://jung-6907.onrender.com/madlibs</a></p>
+<div class="paragraph">
+<p>Madlibs (2 points)</p>
+</div>
 </li>
 </ol>
 </div>
@@ -742,7 +772,7 @@ module.exports = router;</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-03-30 15:47:37 -0400
+Last updated 2024-03-24 17:57:24 -0400
 </div>
 </div>
 </body>
