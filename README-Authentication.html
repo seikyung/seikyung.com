@@ -544,8 +544,7 @@ echo "DATABASE_URL='postgres://localhost'" &gt; .env</pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>npm install passport@0.5.3 --save
-npm install passport-local express-flash --save</pre>
+<pre>npm install passport passport-local express-flash --save</pre>
 </div>
 </div>
 </li>
@@ -553,7 +552,7 @@ npm install passport-local express-flash --save</pre>
 <p>Install session middleware.  Authentication requires session middleware</p>
 <div class="listingblock">
 <div class="content">
-<pre>npm install cookie-session --save</pre>
+<pre>npm install express-session --save</pre>
 </div>
 </div>
 </li>
@@ -656,7 +655,7 @@ var app = express();
 
 
 // new stuff starts here
-var session = require('cookie-session');
+var session = require('express-session');
 
 // Flash is needed for passport middleware
 var flash = require('express-flash');
@@ -716,18 +715,12 @@ passport.deserializeUser(function(id, done) {
 // Use the session middleware
 // configure session object to handle cookie
 // req.flash() requires sessions
-
-app.set('trust proxy', 1)
 // secret: 'webDev' This is the secret used to sign the session ID cookie.
 // It should be a long, randomly-generated string to ensure security.
 app.use(session({
   secret: 'WebDev',
   resave:false,
   saveUninitialized: true,
-  //cookie.secure: true means that the cookie is sent only over HTTPS
-  cookie: {
-    secure: (process.env.NODE_ENV &amp;&amp; process.env.NODE_ENV == 'production') ? true:false
-  }
 }));
 
 app.use(flash());
@@ -784,8 +777,13 @@ client.connect();
 var passport = require('passport');
 var bcrypt = require('bcryptjs');
 
-router.get('/logout', function(req, res){
-  req.logout();   //passport provide it
+router.get('/logout', function(req, res, next){
+  req.logout(function(err) {
+    if (err) {
+      console.log("unable to logout:", err);
+      return next(err);
+    }
+  });   //passport provide it
   res.redirect('/'); // Successful. redirect to localhost:3000/
 });
 
@@ -1170,7 +1168,7 @@ nav ul li {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-03-28 14:22:42 -0400
+Last updated 2024-04-01 18:34:09 -0400
 </div>
 </div>
 </body>
