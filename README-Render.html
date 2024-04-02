@@ -724,6 +724,10 @@ CREATE TABLE users ("id" serial primary key, username text, password text, fulln
 
 INSERT INTO users (username,password,fullname,prefer) VALUES('admin','$2a$10$tXMKF036p0ZYIxF/cJEHauw/TFrcho4DXy41Kt12D3Lbnzr221hmK','Marshall Mathers','Eminem');
 
+create table cars (equipID serial PRIMARY KEY, maker CHAR(10), model CHAR(20), year INT );
+
+\COPY cars FROM 'cars.txt' WITH (FORMAT csv);
+
 \q</pre>
 </div>
 </div>
@@ -768,7 +772,7 @@ INSERT INTO users (username,password,fullname,prefer) VALUES('admin','$2a$10$tXM
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-04-02 09:26:14 -0400
+Last updated 2024-04-02 09:28:37 -0400
 </div>
 </div>
 </body>
