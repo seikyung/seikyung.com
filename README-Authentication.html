@@ -648,6 +648,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+// add this line before var indexRouter = require('./routes/index');
+var env = require('dotenv').config();
+
 var indexRouter = require('./routes/index');   // index.js
 var usersRouter = require('./routes/users');   // users.js
 
@@ -659,7 +662,6 @@ var session = require('express-session');
 
 // Flash is needed for passport middleware
 var flash = require('express-flash');
-var env = require('dotenv').config();
 
 const Client = require('pg').Client;
 // create an instance from Client
@@ -1171,7 +1173,7 @@ nav ul li {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-04-02 10:44:48 -0400
+Last updated 2024-04-02 12:16:38 -0400
 </div>
 </div>
 </body>
