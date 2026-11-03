@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.20">
+<meta name="generator" content="Asciidoctor 2.0.23">
 <title>Authentication application</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -140,7 +140,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #content::before{content:none}
 #header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
 #header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #dddddf}
-#header>h1:only-child,body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
+#header>h1:only-child{border-bottom:1px solid #dddddf;padding-bottom:8px}
 #header .details{border-bottom:1px solid #dddddf;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:flex;flex-flow:row wrap}
 #header .details span:first-child{margin-left:-.125em}
 #header .details span.email a{color:rgba(0,0,0,.85)}
@@ -162,6 +162,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #toctitle{color:#7a2518;font-size:1.2em}
 @media screen and (min-width:768px){#toctitle{font-size:1.375em}
 body.toc2{padding-left:15em;padding-right:0}
+body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
 #toc.toc2{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
 #toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
 #toc.toc2>ul{font-size:.9em;margin-bottom:0}
@@ -327,7 +328,7 @@ a.image{text-decoration:none;display:inline-block}
 a.image object{pointer-events:none}
 sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
 sup.footnote a,sup.footnoteref a{text-decoration:none}
-sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
+sup.footnote a:active,sup.footnoteref a:active,#footnotes .footnote a:first-of-type:active{text-decoration:underline}
 #footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
 #footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
 #footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
@@ -474,7 +475,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 This command may take a while to run.</p>
 <div class="listingblock">
 <div class="content">
-<pre>npm install</pre>
+<pre>npm install
+# You may need this command
+npm audit fix --force</pre>
 </div>
 </div>
 </li>
@@ -532,19 +535,16 @@ echo "DATABASE_URL='postgres://localhost'" &gt; .env</pre>
 </div>
 </li>
 <li>
-<p>Install three packages</p>
+<p>Install passport packages</p>
 <div class="paragraph">
 <p><code>passport.js</code>. Passport is authentication middleware for Node.js (Reference: <a href="http://www.passportjs.org/" class="bare">http://www.passportjs.org/</a>)</p>
 </div>
 <div class="paragraph">
 <p><code>passport-local</code>: local authentication (not using third-party authentication, such as passport-google, passport-twitter, passport-github&#8230;&#8203;)</p>
 </div>
-<div class="paragraph">
-<p><code>express-flash</code>: reference: <a href="https://www.npmjs.com/package/express-flash" class="bare">https://www.npmjs.com/package/express-flash</a></p>
-</div>
 <div class="listingblock">
 <div class="content">
-<pre>npm install passport passport-local express-flash --save</pre>
+<pre>npm install passport passport-local --save</pre>
 </div>
 </div>
 </li>
@@ -590,7 +590,7 @@ Remember: NEVER store the password directly in the database.</p>
 <p>Insert a user (admin) with password hello (<strong>for TESTING purposes only</strong>):</p>
 <div class="listingblock">
 <div class="content">
-<pre>INSERT INTO users (username,password,fullname,prefer) VALUES('admin','$2a$10$tXMKF036p0ZYIxF/cJEHauw/TFrcho4DXy41Kt12D3Lbnzr221hmK','Alan Turing','Prof');</pre>
+<pre>INSERT INTO users (username,password,fullname,prefer) VALUES('admin','$2b$10$xDSpTdpmRAjxK3pC1HXqxe2lIr8NZWs4mzRbmnqmD3abTrayTH9Oq','Alan Turing','Prof');</pre>
 </div>
 </div>
 <div class="hdlist">
@@ -649,20 +649,16 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 // add this line before var indexRouter = require('./routes/index');
-// If not, you MAY have "password must be a string" error
+// If not, you MAY have an errpr: password is not a string
 var env = require('dotenv').config();
 
-var indexRouter = require('./routes/index');   // index.js
-var usersRouter = require('./routes/users');   // users.js
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/users');
 
 var app = express();
 
-
-// new stuff starts here
-var session = require('express-session');
-
-// Flash is needed for passport middleware
-var flash = require('express-flash');
+// Must be after the line app = express();
+var session = require('express-session'); // to use session
 
 const Client = require('pg').Client;
 // create an instance from Client
@@ -717,7 +713,6 @@ passport.deserializeUser(function(id, done) {
 
 // Use the session middleware
 // configure session object to handle cookie
-// req.flash() requires sessions
 // secret: 'webDev' This is the secret used to sign the session ID cookie.
 // It should be a long, randomly-generated string to ensure security.
 app.use(session({
@@ -725,8 +720,6 @@ app.use(session({
   resave:false,
   saveUninitialized: true,
 }));
-
-app.use(flash());
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -763,9 +756,7 @@ router.get('/', function(req, res, next) {
 
 // new stuff
 var path = require('path');
-var env = require('dotenv').config();
 // Connect to process.env.DATABASE_URL when your app initializes:
-// Read only reference value (const)
 // get only Client class from pg package
 const Client = require('pg').Client;
 
@@ -821,14 +812,15 @@ router.get('/login', notLoggedIn, function(req, res){
 });
 
 // localhost:3000/users/login
+// authentication locally (not using passport-google, passport-twitter, passport-github...)
 router.post('/login',
-  // This is where authentication happens - app.js
-  // authentication locally (not using passport-google, passport-twitter, passport-github...)
-  passport.authenticate('local', { failureRedirect: 'login?message=Incorrect+credentials', failureFlash:true }),
-  function(req, res,next) {
+  passport.authenticate('local', {
+    failureRedirect: '/users/login?message=Incorrect+credentials'
+  }),
+  function(req, res, next) {
     let prefer = req.user.prefer;
-    console.log("fullname: ", prefer);
-    res.redirect('/users/profile?name='+prefer); // Successful. redirect to localhost:3000/users/profile
+    console.log("preferred Name: ", prefer);
+    res.redirect('/users/profile?name=' + prefer);
 });
 
 
@@ -848,9 +840,9 @@ function createUser(req, res, next){
   client.query('INSERT INTO users (username, password, fullname, prefer) VALUES($1, $2, $3, $4)', [req.body.username, password,req.body.fullname,req.body.prefer], function(err, result) {
     if (err) {
       console.log("unable to query INSERT");
-      return next(err); // throw error to error.hbs.
+      return next(err); // throw error.
     }
-    console.log("User creation is successful");
+    console.log("User created successfully");
     res.redirect('/users/login?message=We+created+your+account+successfully!');
   });
 }
@@ -859,7 +851,7 @@ router.post('/signup', function(req, res, next) {
   client.query('SELECT * FROM users WHERE username=$1',[req.body.username], function(err,result){
     if (err) {
       console.log("sql error ");
-      next(err); // throw error to error.hbs.
+      next(err); // throw error.
     }
     else if (result.rows.length &gt; 0) {
       console.log("user exists");
@@ -885,7 +877,7 @@ module.exports = router;</pre>
 &lt;head&gt;
   &lt;title&gt;Express&lt;/title&gt;
   &lt;link rel="stylesheet" href="/stylesheets/style.css"&gt;
-  &lt;link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"&gt;
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" &gt;
 
 &lt;/head&gt;
 &lt;body&gt;
@@ -912,13 +904,20 @@ module.exports = router;</pre>
   &lt;link rel="stylesheet" href="/stylesheets/style.css"&gt;
   &lt;link rel='stylesheet' href='/stylesheets/login.css' /&gt;
 
-  &lt;link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"&gt;
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" &gt;
 
-  &lt;script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin="anonymous"&gt;&lt;/script&gt;
-  &lt;script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin="anonymous"&gt;&lt;/script&gt;
+  &lt;script type="importmap"&gt;
+      {
+        "imports": {
+          "react": "https://esm.sh/react@19?dev",
+          "react-dom": "https://esm.sh/react-dom@19?dev",
+          "react-dom/client": "https://esm.sh/react-dom@19/client?dev"
+        }
+      }
+  &lt;/script&gt;
   &lt;script src="https://unpkg.com/@babel/standalone/babel.min.js" crossorigin="anonymous"&gt;&lt;/script&gt;
 
-  &lt;script src="/javascripts/showPassword.js" &gt;&lt;/script&gt;
+  &lt;script src="/javascripts/showPassword.js"&gt;&lt;/script&gt;
 
 &lt;/head&gt;
 
@@ -946,8 +945,10 @@ module.exports = router;</pre>
       &lt;/div&gt;
     &lt;/form&gt;
     &lt;/main&gt;
+
   &lt;!-- Load our React component. --&gt;
-  &lt;script src="/javascripts/login.js" type="text/babel"&gt;&lt;/script&gt;
+  &lt;script src="/javascripts/login.js" type="text/babel" data-type="module"&gt;&lt;/script&gt;
+
 &lt;/body&gt;
 &lt;/html&gt;</pre>
 </div>
@@ -963,11 +964,19 @@ module.exports = router;</pre>
   &lt;link rel="stylesheet" href="/stylesheets/style.css"&gt;
   &lt;link rel='stylesheet' href='/stylesheets/login.css' /&gt;
 
-  &lt;link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"&gt;
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" &gt;
 
-  &lt;script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin="anonymous"&gt;&lt;/script&gt;
-  &lt;script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin="anonymous"&gt;&lt;/script&gt;
+  &lt;script type="importmap"&gt;
+      {
+        "imports": {
+          "react": "https://esm.sh/react@19?dev",
+          "react-dom": "https://esm.sh/react-dom@19?dev",
+          "react-dom/client": "https://esm.sh/react-dom@19/client?dev"
+        }
+      }
+  &lt;/script&gt;
   &lt;script src="https://unpkg.com/@babel/standalone/babel.min.js" crossorigin="anonymous"&gt;&lt;/script&gt;
+
   &lt;script src="/javascripts/showPassword.js" &gt;&lt;/script&gt;
 
 &lt;/head&gt;
@@ -1000,7 +1009,8 @@ module.exports = router;</pre>
     &lt;/main&gt;
 
   &lt;!-- Load our React component. --&gt;
-  &lt;script src="/javascripts/signup.js" type="text/babel"&gt;&lt;/script&gt;
+  &lt;script src="/javascripts/signup.js" type="text/babel" data-type="module"&gt;&lt;/script&gt;
+
 &lt;/body&gt;
 &lt;/html&gt;</pre>
 </div>
@@ -1043,7 +1053,10 @@ module.exports = router;</pre>
 <p>Create <code>public/javascripts/login.js</code> and save:</p>
 <div class="listingblock">
 <div class="content">
-<pre>const urlParams = new URLSearchParams(window.location.search);
+<pre>import React from 'react';
+import { createRoot } from 'react-dom/client';
+
+const urlParams = new URLSearchParams(window.location.search);
 const message = urlParams.get('message');
 
 if (message) {
@@ -1055,7 +1068,7 @@ if (message) {
     );
   };
 
-  const login = ReactDOM.createRoot(document.getElementById('message'));
+  const login = createRoot(document.getElementById('message'));
   login.render(&lt;LoginComponent /&gt;);
 }</pre>
 </div>
@@ -1065,7 +1078,10 @@ if (message) {
 <p>Create <code>public/javascripts/signup.js</code> and save:</p>
 <div class="listingblock">
 <div class="content">
-<pre>const urlParams = new URLSearchParams(window.location.search);
+<pre>import React from 'react';
+import { createRoot } from 'react-dom/client';
+
+const urlParams = new URLSearchParams(window.location.search);
 const message = urlParams.get('error');
 
 if (message) {
@@ -1077,7 +1093,7 @@ if (message) {
     );
   };
 
-  const signup = ReactDOM.createRoot(document.getElementById('message'));
+  const signup = createRoot(document.getElementById('message'));
   signup.render(&lt;SignupComponent /&gt;);
 }</pre>
 </div>
@@ -1174,7 +1190,7 @@ nav ul li {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-04-03 18:26:33 -0400
+Last updated 2026-11-02 12:51:29 -0500
 </div>
 </div>
 </body>

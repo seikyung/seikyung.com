@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.20">
+<meta name="generator" content="Asciidoctor 2.0.23">
 <title>Cloud hosting setup instructions</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -140,7 +140,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #content::before{content:none}
 #header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
 #header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #dddddf}
-#header>h1:only-child,body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
+#header>h1:only-child{border-bottom:1px solid #dddddf;padding-bottom:8px}
 #header .details{border-bottom:1px solid #dddddf;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:flex;flex-flow:row wrap}
 #header .details span:first-child{margin-left:-.125em}
 #header .details span.email a{color:rgba(0,0,0,.85)}
@@ -162,6 +162,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #toctitle{color:#7a2518;font-size:1.2em}
 @media screen and (min-width:768px){#toctitle{font-size:1.375em}
 body.toc2{padding-left:15em;padding-right:0}
+body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
 #toc.toc2{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
 #toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
 #toc.toc2>ul{font-size:.9em;margin-bottom:0}
@@ -327,7 +328,7 @@ a.image{text-decoration:none;display:inline-block}
 a.image object{pointer-events:none}
 sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
 sup.footnote a,sup.footnoteref a{text-decoration:none}
-sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
+sup.footnote a:active,sup.footnoteref a:active,#footnotes .footnote a:first-of-type:active{text-decoration:underline}
 #footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
 #footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
 #footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
@@ -495,7 +496,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 This command may take a while to run.</p>
 <div class="listingblock">
 <div class="content">
-<pre>npm install</pre>
+<pre>npm install
+# You may need this command
+npm audit fix --force</pre>
 </div>
 </div>
 </li>
@@ -568,7 +571,7 @@ echo "DATABASE_URL='postgres://localhost'" &gt; .env</pre>
 <p><code>app.js</code>, <code>users.js</code>, <code>index.html</code>, <code>login.html</code>, <code>profile.html</code>, <code>signup.html</code>, <code>login.js</code>, <code>signup.js</code>, <code>showPassword.js</code>, <code>login.css</code>, <code>style.css</code></p>
 </div>
 <div class="paragraph">
-<p>Install necessary packages: <code>express-session</code>, <code>bcryptjs</code>, <code>passport</code>, <code>passport-local</code>, <code>express-flash</code></p>
+<p>Install necessary packages: <code>express-session</code>, <code>bcryptjs</code>, <code>passport</code>, <code>passport-local</code></p>
 </div>
 </li>
 <li>
@@ -590,7 +593,7 @@ echo "DATABASE_URL='postgres://localhost'" &gt; .env</pre>
 <p>Go to <a href="http://localhost:3000/madlibs" class="bare">http://localhost:3000/madlibs</a></p>
 </li>
 <li>
-<p>Go to <a href="http://localhost:3000/cars" class="bare">http://localhost:3000/cars</a></p>
+<p>Go to <a href="http://localhost:3000/car" class="bare">http://localhost:3000/car</a></p>
 </li>
 <li>
 <p>Test all your exercises <strong>If not working, do not move on until you fix it.</strong></p>
@@ -622,7 +625,8 @@ I recommend using your <strong>LASTNAME</strong> or <strong>unique_name</strong>
 echo "node_modules" &gt;&gt; .gitignore
 echo .env &gt;&gt; .gitignore
 echo package-lock.json &gt;&gt; .gitignore
-echo .DS_Store &gt;&gt; .gitignore     #only for Mac users
+#only for Mac users
+echo .DS_Store &gt;&gt; .gitignore
 git status
 git add .
 git commit -m "Initial commit"</pre>
@@ -657,10 +661,20 @@ git push render main    # it could be: git push render master</pre>
 <p><a href="https://dashboard.render.com/">Sign up</a> to create your free account on Render.</p>
 </li>
 <li>
-<p>Create Web Service from Render</p>
+<p>Create Postgres from Render. You can name it something to remember. Choose the free option. Get environment variable: DATABASE_URL</p>
 <div class="imageblock">
 <div class="content">
-<img src="images/createWebService.png" alt="Create Web Service from Render" width="600" height="400">
+<img src="img/1.postgres1.png" alt="1.postgres1" width="400" height="400">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="img/1.postgres2.png" alt="1.postgres2" width="400" height="400">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="img/1.postgres3.png" alt="1.postgres3" width="400" height="400">
 </div>
 </div>
 </li>
@@ -668,23 +682,40 @@ git push render main    # it could be: git push render master</pre>
 <p>Connect to github repository from Render</p>
 <div class="imageblock">
 <div class="content">
-<img src="images/createWebServiceFromGithub.png" alt="Connect to github repository from Render" width="600" height="400">
+<img src="img/2.AccountSettings1.png" alt="2.AccountSettings1" width="600" height="400">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="img/2.AccountSettings2.png" alt="2.AccountSettings2" width="600" height="400">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="img/3.ConfigureGitHub.png" alt="3.ConfigureGitHub" width="600" height="400">
 </div>
 </div>
 </li>
 <li>
-<p>Create Postgres</p>
+<p>Create Web Service from Render</p>
 <div class="imageblock">
 <div class="content">
-<img src="images/createPostgres.png" alt="Create Postgres" width="600" height="400">
+<img src="img/4.createWebService1.png" alt="4.createWebService1" width="600" height="400">
 </div>
 </div>
-</li>
-<li>
-<p>Get environment variable: DATABASE_URL</p>
 <div class="imageblock">
 <div class="content">
-<img src="images/getDATABASE_URL.png" alt="Get environment variable: DATABASE_URL" width="600" height="400">
+<img src="img/4.createWebService2.png" alt="4.createWebService2" width="600" height="400">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="img/4.createWebService3.png" alt="4.createWebService3" width="600" height="400">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="img/4.freeService.png" alt="4.freeService" width="600" height="400">
 </div>
 </div>
 </li>
@@ -692,7 +723,12 @@ git push render main    # it could be: git push render master</pre>
 <p>Set environment variable: DATABASE_URL</p>
 <div class="imageblock">
 <div class="content">
-<img src="images/setDATABASE_URL.png" alt="Set environment variable: DATABASE_URL" width="600" height="400">
+<img src="img/5.DatabaseURL1.png" alt="5.DatabaseURL1" width="600" height="400">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="img/5.DatabaseURL2.png" alt="5.DatabaseURL2" width="600" height="400">
 </div>
 </div>
 </li>
@@ -700,7 +736,7 @@ git push render main    # it could be: git push render master</pre>
 <p>psql command to access remote database</p>
 <div class="imageblock">
 <div class="content">
-<img src="images/psql_command.png" alt="psql command to access remote database" width="600" height="400">
+<img src="img/6.PSQL.png" alt="6.PSQL" width="600" height="400">
 </div>
 </div>
 </li>
@@ -722,11 +758,11 @@ git push render main    # it could be: git push render master</pre>
 <pre>psql command here that copied from Render site (last screen shot)
 CREATE TABLE users ("id" serial primary key, username text, password text, fullname text, prefer text);
 
-INSERT INTO users (username,password,fullname,prefer) VALUES('admin','$2a$10$tXMKF036p0ZYIxF/cJEHauw/TFrcho4DXy41Kt12D3Lbnzr221hmK','Marshall Mathers','Eminem');
+INSERT INTO users (username,password,fullname,prefer) VALUES('admin','$2a$10$tXMKF036p0ZYIxF/cJEHauw/TFrcho4DXy41Kt12D3Lbnzr221hmK','Tim Berners-Lee','Prof');
 
-create table cars (equipID serial PRIMARY KEY, maker CHAR(10), model CHAR(20), year INT );
+create table car (equipID serial PRIMARY KEY, maker CHAR(10), model CHAR(20), year INT );
 
-\COPY cars FROM 'cars.txt' WITH (FORMAT csv);
+\COPY car FROM 'car.txt' WITH (FORMAT csv);
 
 \q</pre>
 </div>
@@ -748,19 +784,19 @@ create table cars (equipID serial PRIMARY KEY, maker CHAR(10), model CHAR(20), y
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><a href="https://jung-6907.onrender.com/" class="bare">https://jung-6907.onrender.com/</a></p>
+<p><a href="https://jung-03qd.onrender.com/" class="bare">https://jung-03qd.onrender.com/</a></p>
 <div class="paragraph">
 <p>Authentication (5 points)</p>
 </div>
 </li>
 <li>
-<p><a href="https://jung-6907.onrender.com/cars" class="bare">https://jung-6907.onrender.com/cars</a></p>
+<p><a href="https://jung-03qd.onrender.com/car" class="bare">https://jung-03qd.onrender.com/car</a></p>
 <div class="paragraph">
 <p>Postgres (3 points)</p>
 </div>
 </li>
 <li>
-<p><a href="https://jung-6907.onrender.com/madlibs" class="bare">https://jung-6907.onrender.com/madlibs</a></p>
+<p><a href="https://jung-03qd.onrender.com/madlibs" class="bare">https://jung-03qd.onrender.com/madlibs</a></p>
 <div class="paragraph">
 <p>Madlibs (2 points)</p>
 </div>
@@ -772,7 +808,7 @@ create table cars (equipID serial PRIMARY KEY, maker CHAR(10), model CHAR(20), y
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-04-04 11:45:40 -0400
+Last updated 2026-11-02 18:55:07 -0500
 </div>
 </div>
 </body>
